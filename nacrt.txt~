@@ -1,0 +1,18 @@
+Kvantni križić kružić
+
+Tijekom akademske godine godine 2010./2012. kao projekt na kolegiju "Umjetna inteligencija" radio sam na implementaciji igre kvantni križić kružić ([LINK]). Igru možemo zamišljati kao više paralelnih igara klasične varijante. Postoji posebna vrsta poteza ('measurment', odn. zatvaranje) kojim igrač odlučuje koja od mogućih varijanti igre se stvarno desila. Više o igri: http://en.wikipedia.org/wiki/Quantum_tic-tac-toe.
+
+U implementaciji smo koristili min-max algoritam s alfa-beta podrezivanjem. Svaka igra završava u manje od 13 poteza, ali se stablo pretraživanja širi eksponencijalno, te je svako pretraživanje veće od dubine 3-4 trajalo neprihvatljivo dugo na prosječnom računalu. Zbog toga smo u vrednovanju krajnjih čvorova pretraživanja koristili fiksnu heuristiku koja nam se intuitivno učinila najpogodnija. Iako bi se daljnjom optimizacijom algoritma (npr. boljim prepoznavanjem ekvivalentnih stanja), te korištenjem paralelizacije (preko QUDAe) vremenski prihvatljiva dubina mogla značajno povećati, već tada se pojavila ideja da bi se sama heuristika mogla učiti nekom od metoda strojnog učenja. 
+Također, valja imati na umu da ako želimo igru učiniti široko pristopačnom, ona bi se trebala moći izvoditi u web browseru i na mobilnim platformama - stoga oslanjanje na procesnu moć i pristup sistemskim resursima niskog nivoa nije praktičan smjer razmišljanja.
+
+Osnovna ideja za projekt je reimplementacija igre, ali ovaj put koristivši neku od metoda strojnog učenja. Ovu implementaciju bih pisao u javascriptu jer je to front-end tehnologija koja je najraširenija.
+
+Kako će igra biti dostupna na webu, očiti izvor podataka za učenje su odigrane partije. Naravno, jer ne mogu računati da će puno ljudi igrati igru, a kako bih mogao završiti projekt, trebati ću napraviti i generator eksperimenata (igre računala protiv sebe).
+
+Cilj učenja bi bio što bolja aproksimacija funkcije koja pojedinim stanjima ploče pridruživala brojčane vrijednosti, na naćin da veći brojevi označavaju snažnije pozicije. Hipoteze možemo testirati mjereći njihovu uspješnost pri igrama s ljudskim igračima i protiv drugih hipoteza. 
+
+Što se tiče same reprezentacije funkcije i prostora hipoteza, nisam sasvim siguran. S jedne strane, ako koristimo samo sirove podatke (kodirane pozicije) kao domenu funkcije, dobivamo ogroman prostor koji će se polagano pretraživati. Također, lako je moguće da dijelovi prostora budu potpuno zaobiđeni. Druga varijanta je da koristim razne izvedene atribute (karakteristike pozicije), no nemam dovoljno iskustva s igrom da bih pouzdano tvrditi koje karakteristike ploče su "definirajuće".
+
+Drugi problem je s izborom samog algoritma za učenje. Koliko znam, nitko još nije pokušao primjeniti strojno učenje za igranje ove konkretne igre, dapače, naša implementacija od pretprošle godine je još uvijek jedina u kojoj je uopće moguća igra protiv računala. Proučavao sam načine na koje ljudi koriste strojno učenje u sličnim igrama (zero-sum igre za dva igrača), kao npr. šah i go, ali (očekivano), izbor uspješnog algoritma uvelike ovisi o karakteristikama same igre. Npr., metoda koja se pokazala kao relativno uspješna za go je pokušavati uočiti uzorke dijelova pozicije iz partija velemajstora i emulirati razrješavanje istih. No, u gou možemo dobivati/gubiti bodove na jednom dijelu ploče sasvim neovisno o drugom, što bitno povećava primjenjivost takve metode.
+
+

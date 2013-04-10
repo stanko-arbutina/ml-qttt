@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 
+Korisničko sučelje (pozadinska slika, početni meni).
+Također, ovdje vodimo brigu o opcijama igre
+-->
+
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:s="library://ns.adobe.com/flex/spark" xmlns:mx="library://ns.adobe.com/flex/halo" xmlns:oldmx="library://ns.adobe.com/flex/mx" xmlns:custom="includes.*" currentState="MainMenu" >
+<fx:Script>
+
+		<![CDATA[
+			
+			import includes.*;
+			import flash.events.MouseEvent;
+			import flash.text.TextField;
+
+			internal var g:GameController; //GameController je osnovna klasa zadužena za igru, povezuje model (QBoard) i view (BaseBoard),	
+							// vodi računa o svim "tehnikalijama"
+
+		
+			private function enterGame(pl_mod:int):void {
+				currentState = "Game";//jedno stanje je za sve vrste igara (kao križić, kao kružić i za 2 igrača) 
+				g=new GameController(gameboard,pl_mod,info_text);				
+			}
+
+			protected function startOGameClicked(event:Event):void {
+				enterGame(0); //parametar 0 znači da igramo kao kružić
+			}
+
+			protected function startXGameClicked(event:Event):void {	
+				enterGame(1); //parametar 1 znači da igramo kao križić
+			}
+
+			protected function start2GameClicked(event:Event):void {
+				enterGame(2); //svi ostali parametri označavaju igru za dva igrača
+			}
+			
+			protected function menu(event:Event):void { //ulazimo u meni (najvjerojatnije smo kliknuli izlaz)
+				var i:int;
+
+	
+				if (currentState=="Options") { //ako izlazimo iz opcija, MiniMaxu pridružujemo parametre
+					MiniMax.startDepth=depthval.selectedItem;
+					MiniMax.add_depth_criterium=incCrit.selectedItem;
+					MiniMax.add_depth_criterium_small=incCrit1.selectedItem;
+					MiniMax.cycle_reward=cycle_reward.selectedItem;
+					MiniMax.small_reward=small_reward.selectedItem;
+					MiniMax.big_reward=big_reward.selectedItem;
+					MiniMax.line_free_reward_small=line_free_reward_small.selectedItem;
+					MiniMax.line_free_reward_big=line_free_reward_big.selectedItem;
+					MiniMax.extra_search_criterium=escrit.selectedItem;
+					MiniMax.extra_search_depth=esdepth.selectedItem;
+				}
+				if (g) { //ako izlazimo iz igre, čistimo gameController
+					g.clearGame();
+					g=null;
+				}				
+				currentState = "MainMenu";
+				
+			}
+
+			
+
+		]]>
+
+	</fx:Script>
+
+<s:states>
+        <s:State name="MainMenu"/>
+        <s:State name="Game"/>
+	<s:State name="Rules"/>
+	<s:State name="Options"/>
+	<s:State name="About"/>
+</s:states>	
+
+<s:BorderContainer horizontalCenter="0" verticalCenter="0" width="100%" height="100%" cornerRadius="0"
+	                borderWeight="0" backgroundImage="@Embed('back1.jpg')"
+	                backgroundImageFillMode="repeat">
+
+	<s:Group scaleX="2.5" scaleY="2" width="100%" verticalCenter="0" horizontalCenter="0" includeIn="MainMenu">
+		<s:RichText horizontalCenter="0" y="-40" text="Kvantni križić-kružić" fontSize="26"/>
+	 	<s:Button horizontalCenter="0" height="20"  label="Igraj kao X" id="btnStartX"  click="startXGameClicked(event)"/>
+		<s:Button y="22" horizontalCenter="0" height="20" label="Igraj kao O" id="btnStartO"  click="startOGameClicked(event)"/>
+		<s:Button y="44" horizontalCenter="0" height="20" label="Opcije (UI)" id="opcije" click="currentState='Options'"/>
+		<s:Button y="66" horizontalCenter="0" height="20" label="Igra za dva igrača" id="btnStart2"  click="start2GameClicked(event)"/>
+		<s:Button y="88" horizontalCenter="0" height="20" label="O igri i pravila" id="pravila" click="currentState='Rules'"/>
+		<s:Button y="110" horizontalCenter="0" height="20" label="O programu" id="o_programu" click="currentState='About'"/>          
+	</s:Group>
+
+	<s:Group width="98%" height="98%" verticalCenter="0" horizontalCenter="0" includeIn="Game" itemCreationPolicy="immediate">
+		 <s:Panel width="20%" height="100%" title="Status">
+		  <s:RichText text="" width="100%" height="100%" fontSize="14" paddingTop="7" paddingLeft="7" id="info_text"/>
+		</s:Panel>
+		<s:Group width="80%" right="0" height="100%">
+		<!-- GameBoard je klase UIComponent, pa ga možemo koristiti kao i bilo koju komponentu flexa. To je također i view dio igre, kontroliran
+			GameControllerom --> 
+		 <custom:GameBoard id="gameboard" horizontalCenter="0" verticalCenter="0" includeIn="Game" itemDestructionPolicy="auto"/>
+		</s:Group>
+	</s:Group>
+
+	<s:Group verticalCenter="0" width="80%" height="100%" horizontalCenter="0" includeIn="Rules" itemCreationPolicy="immediate">
+	<s:Panel title="O igri i pravila igre" top="30" width="100%" horizontalCenter="0">	 
+		<s:RichText  paddingLeft="10" paddingRight="10" textAlign="left" width="100%" height="100%" text="" fontSize="16" paddingTop="20" whiteSpaceCollapse="preserve">Igru je izumio Alan Goff kako bi ljudima na jednostavan način omogućio razvijanje intuicije o kvantnim fenomenima.
+
+Kao i kod klasičnog križić-kružića, igrači naizmjence postavljaju znakove x (križić) i (kružić) u slobodna polja (križić počinje). Umjesto jednog, svaki igrač postavlja dva znaka u različita polja (te poteze nazivamo "spooky"). Ako smo u jednom potezu postavili znakove u dva polja, ta polja postaju isprepletena. Prije ili poslije (nakon najviše 9 poteza) nastati će ciklička isprepletenost. Kažemo da smo zatorili ciklus. Tada igrač koji nije zatvorio ciklus radi "mjerenje", odnosno bira u kojem smjeru će razriješiti ciklus. Razriješenje ciklusa je operacija pomoću koje u svakom polju ostaje samo jedan znak, ali tako da od svakog para ostane točno pola. Od tada nadalje, potezi u tim potezima su "klasični" i ta polja više ne možemo upotrebljavati. Isti igrač (koji je obavio mjerenje) nastavlja s igrom. Izniman slučaj je kada su sva polja osim jednog popunjena klasičnim potezima (tada više ne možemo igrati u dva polja) - tada igrač koji je na potezu postavlja jedan klasičan znak u preostalo polje.
+
+Igra je gotova kada više nema legalnih poteza ili kada imamo niz od tri ista klasična znaka u dijagonali, horizontalno ili vertikalno (kao u klasičnom križić-kružiću), te taj igrač pobjeđuje. Zbog izmjenjenih pravila, moguće je da postoje dva takva niza. Ako su u jednom nizu križići, a u drugom kružići, pobjeđuje igrač koji je prvi napravio takav niz (zbog toga za svaki potez pamtimo koji je bio po redu u igri), ali za pola boda. Ako su u oba niza križići (odnosno kružići), te ako su oba niza kompletirana u istom potezu, igrač koji ih je kompletirao pobjeđuje za dva boda. Ako se to pak desilo u različitim potezima, pobjeđuje za bod i pol.	
+		</s:RichText>
+		</s:Panel>
+	</s:Group>
+
+	<s:Group verticalCenter="0" width="60%" height="100%" horizontalCenter="0" includeIn="About" itemCreationPolicy="immediate">
+		<s:Panel title="O programu" top="30" width="100%" horizontalCenter="0">
+		 <s:RichText paddingLeft="10" paddingRight="10" textAlign="left" width="100%" height="100%" text="" fontSize="16" paddingTop="20" whiteSpaceCollapse="preserve">Ovu implementaciju napravili su Dario Maltarski, Jovo Skorupan i Stanko Arbutina kao projektni zadatak za kolegij Umjetna Inteligencija koji se drži na prvoj godini diplomskog studija Računarstvo i matematika na Matematičkom odjelu Prirodoslovno-matematičkog fakulteta u Zagrebu. Kao programski jezik je korišten Actionscript 3.0, a korisničko sučelje je složeno u Flexu. Korišten je Flex 4 SDK kompajler. Igra je slobodna (i besplatna) za korištenje u nekomercijalne svrhe.
+
+Za sve primjedbe/sugestije pišite na stanko.arbutina@gmail.com
+		</s:RichText>
+		</s:Panel>
+	</s:Group>
+
+	<s:Group verticalCenter="0" height="100%" horizontalCenter="0" includeIn="Options" itemCreationPolicy="immediate">
+		<!-- opcije umjetne inteligencije. Vjerojatno bi bilo bolje riješiti elegantnije (datagrid?), ali ovako funkcionira -->
+		<s:Panel top="5" horizontalCenter="0" title="Dubina pretraživanja:">
+		 <s:HGroup paddingTop="10" paddingBottom="10" paddingLeft="10" paddingRight="10"  horizontalCenter="0" verticalCenter="0">		
+			<s:VGroup>
+				<s:Label height="30" width="300" fontSize="16" text="Početna dubina pretraživanja:"/>
+				<s:Label height="30" width="300" fontSize="16" text="Ako je pretraženo manje čvorova, povećaj dubinu:"/>
+				<s:Label height="35" width="300" fontSize="16" text="Ako je pretraženo manje čvorova, dodatno povećaj dubinu:"/>
+			</s:VGroup>
+			<s:VGroup>
+			<s:DropDownList height="30" width="50" selectedIndex="1" id="depthval"> 
+				<s:dataProvider>
+				    <s:ArrayList source="[2,3,4,5,6,7,8,9]"/>
+				</s:dataProvider>
+		    	</s:DropDownList>
+			<s:DropDownList height="30" width="100" selectedIndex="5" id="incCrit"> 
+				<s:dataProvider>
+				    <s:ArrayList source="[0,3000,4000,5000,7000,10000,15000,20000,30000]"/>
+				</s:dataProvider>
+			   </s:DropDownList>
+			<s:DropDownList height="30" width="100" selectedIndex="4" id="incCrit1"> 
+					<s:dataProvider>
+			   			 <s:ArrayList source="[0,200,500,700,1000,1500,2000]"/>
+				</s:dataProvider>
+		    	</s:DropDownList>
+			</s:VGroup>
+		 </s:HGroup>
+		</s:Panel>
+
+		<s:Panel top="180" height="100" horizontalCenter="0" title="Preliminarno pretraživanje:">
+		 <s:HGroup paddingLeft="10" paddingRight="10"  horizontalCenter="0" verticalCenter="0">		
+			<s:VGroup>
+				<s:Label height="20" width="250" fontSize="16" text="Čvorove s heuristikom jačom od:"/>
+				<s:Label height="20" width="250" fontSize="16" text="Pretraži za dodatno razina:"/>
+			</s:VGroup>
+			<s:VGroup>
+			<s:DropDownList height="20" width="100" selectedIndex="6" id="escrit"> 
+				<s:dataProvider>
+				    <s:ArrayList source="[0,20,30,40,50,70,100,150,200,300,500,800]"/>
+				</s:dataProvider>
+		    	</s:DropDownList>
+			<s:DropDownList height="20" width="100" selectedIndex="2" id="esdepth"> 
+				<s:dataProvider>
+				    <s:ArrayList source="[0,1,2,3,4,5,6,7]"/>
+				</s:dataProvider>
+			   </s:DropDownList>
+			</s:VGroup>
+		 </s:HGroup>
+		</s:Panel>
+
+		<s:Panel top="295" horizontalCenter="0" title="Heuristika (pobjeda za 1 bod teži 1000, a poraz -1000):">
+		 <s:HGroup paddingTop="10" paddingBottom="10" paddingLeft="10" paddingRight="10"  horizontalCenter="0" verticalCenter="0">		
+			<s:VGroup>
+				<s:Label height="20" width="160" fontSize="16" text="Zatvoren ciklus:"/>
+				<s:Label height="35" width="160" fontSize="16" text="Spooky znak (kut x1/sredina x3):"/>
+				<s:Label height="35" width="160" fontSize="16" text="Klasičan znak (kut x1/sredina x3):"/>
+			</s:VGroup>
+			<s:VGroup>
+			<s:DropDownList height="30" width="70" id="cycle_reward" selectedIndex="5"> 
+					<s:dataProvider>
+					    <s:ArrayList source="[-500,-400,-300,-200,-100,-50,0,50,100,200,300,400,500]"/>
+					</s:dataProvider>
+		    	</s:DropDownList>
+			<s:DropDownList height="30" width="70" id="small_reward" selectedIndex="5"> 
+					<s:dataProvider>
+					    <s:ArrayList source="[-20,-10,-3,-1,0,1,3,10,20]"/>
+					</s:dataProvider>
+		    	</s:DropDownList>
+			<s:DropDownList height="30" width="70" id="big_reward" selectedIndex="9"> 
+					<s:dataProvider>
+					    <s:ArrayList source="[-500,-100,-50,-20,-10,-3,-1,0,1,3,10,20,50,100,500]"/>
+					</s:dataProvider>
+		    	</s:DropDownList>
+			</s:VGroup>
+			<s:VGroup verticalCenter="0">
+				<s:Label height="45" width="200" fontSize="16" text="Otvorena pobjednička linija (1 klasičan znak):"/>
+				<s:Label height="45" width="200" fontSize="16" text="Otvorena pobjednička linija (2 klasična znaka):"/>
+			</s:VGroup>
+			<s:VGroup horizontalCenter="0" verticalCenter="0">
+			<s:DropDownList height="45" width="70" id="line_free_reward_small" selectedIndex="7"> 
+					<s:dataProvider>
+					    <s:ArrayList source="[-200,-100,-50,-30,-10,0,10,30,50,100,200]"/>
+					</s:dataProvider>
+		    	</s:DropDownList>
+			<s:DropDownList height="45" width="70" id="line_free_reward_big" selectedIndex="12"> 
+					<s:dataProvider>
+					    <s:ArrayList source="[-400,-300,-200,-100,-50,-25,-10,0,10,25,50,100,200,300,400]"/>
+					</s:dataProvider>
+		    	</s:DropDownList>
+			</s:VGroup>
+		 </s:HGroup>
+		</s:Panel>
+	</s:Group>
+	<!-- gumb izlaz imamo u svim stanjima osim glavnog menija -->
+	<s:Button right="20" bottom="5" width="150" height="20" includeIn="Game, Rules, Options, About" label="Izlaz" id="menuBtn" click="menu(event)"/> 
+</s:BorderContainer>
+</s:Application>
+
