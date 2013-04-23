@@ -2,23 +2,41 @@
     <head>  
         <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
 	<title>Kvantni križić kružić</title>  
-	<script type="text/javascript" src="jquery-1.9.1.min.js"></script>  
-	<script type="text/javascript" src="jquery.mousewheel.js"></script>  
-	<script type="text/javascript" src="raphael-min.js"></script>  
-	<script type="text/javascript" src="qttt.js"></script>  
+	<script type="text/javascript" src="js/lib/jquery-1.9.1.min.js"></script>  
+	<script type="text/javascript" src="js/lib/raphael-min.js"></script>
+	<script type="text/javascript" src="js/qttt_init.js"></script>
+	<script type="text/javascript" src="js/player.js"></script>      
+	<script type="text/javascript" src="js/game.js"></script>      
+	<script type="text/javascript" src="js/board_display.js"></script>  
+	<script type="text/javascript" src="js/board_view.js"></script>  
 	<style type="text/css">  
 	    #raphael_container {
                 position: fixed;
-                width: 100%;
+                width: 70%;
                 height: 100%;
                 top: 0px;
                 left: 0px;
 	        background-color: #ccc;
 	    }  
+	    #status_container {
+                position: fixed;
+                width: 30%;
+                height: 100%;
+                top: 0px;
+                right: 0px;
+	        background-color: #111;
+	        color: #0A0;
+	        overflow: auto;
+	    }  
+
 	</style>  
     </head>  
     <body>  
 	<div id="raphael_container"></div>  
+	<div id="status_container">
+	  <ul id="status">
+	  </ul>
+	</div>  
     </body>  
 </html>  
               

@@ -1,4 +1,5 @@
 var QTTT = {
+    //služi za grafičku reprezentaciju ploče kada je potrebna
     BoardDisplay: {
 	Mark: {
 	    new: function(opts){
@@ -74,19 +75,23 @@ var QTTT = {
 
 	new: function(dom_element_id){//BoardDisplay.new
 	    this.$el = $('#'+dom_element_id);
-	    var size = Math.min(this.$el.width(),this.$el.height());
+	    var screen_width = this.$el.width();
+	    var screen_height = this.$el.height();
+	    var size = Math.min(screen_width,screen_height);
 	    var paper = new Raphael(dom_element_id, this.size, this.size);
-	    var pstr="M"+size/3+","+"0";
-	    pstr+="L"+size/3+","+size;
-	    pstr+="M"+2*size/3+","+0;
-	    pstr+="L"+2*size/3+","+size;
-	    pstr+="M"+0+","+size/3;
-	    pstr+="L"+size+","+size/3;
-	    pstr+="M"+0+","+2*size/3;
-	    pstr+="L"+size+","+2*size/3;
+	    var margin = Math.max((screen_width-size)/2,0); 
+	    var pstr="M"+(size/3+margin)+","+"0";
+	    pstr+="L"+(size/3+margin)+","+size;
+	    pstr+="M"+(2*size/3+margin)+","+0;
+	    pstr+="L"+(2*size/3+margin)+","+size;
+	    pstr+="M"+margin+","+size/3;
+	    pstr+="L"+(size+margin)+","+size/3;
+	    pstr+="M"+margin+","+2*size/3;
+	    pstr+="L"+(size+margin)+","+2*size/3;
 	    var grid = paper.path(pstr).attr({"stroke-width": 5});
 	    
 	    var board_display = {
+		_margin: margin,
 		fields: [],
 		_size: size,
 		_p: paper,
@@ -94,7 +99,7 @@ var QTTT = {
 		init: function(){
 		    for (i=0;i<9;i++) this.fields.push(QTTT.BoardDisplay.Field.new({
 			paper: this._p, 
-			x: (i % 3)*(this._size/3),
+			x: (i % 3)*(this._size/3)+this._margin,
 			y: Math.floor(i/3)*(this._size/3), 
 			size: this._size/3
 		    }));
@@ -106,11 +111,3 @@ var QTTT = {
 
     }//end QTTT
 };
-
-$(function(){
-    var board = QTTT.BoardDisplay.new('raphael_container');
-    board.fields[0].add('X1');
-    board.fields[2].add('X1');
-    board.fields[1].add('O2');
-    board.fields[5].add('O2');
-});

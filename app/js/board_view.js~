@@ -1,0 +1,27 @@
+/*
+  dodaje interaktivnost boardDisplayu, za početak za igru s dva igrača
+*/
+QTTT.GameOrganizer = {
+    new: function(opts){
+	var game_container = opts.game_container;
+	var status_container = opts.status_container;
+	var board_display = QTTT.BoardDisplay.new(game_container);
+	this.status('Igra je počela!');
+	this.status('Križić je na potezu.');
+	board_display.fields[0].add('X1');
+	board_display.fields[2].add('X1');
+	board_display.fields[1].add('O2');
+	board_display.fields[5].add('O2');	
+    },
+    status: function(text){
+	$('#status').append('<li>'+text+'</li>');
+    }
+}
+
+$(function(){
+    var g = QTTT.GameOrganizer.new({
+	game_container: 'raphael_container',
+	status_container: 'status_container'
+    });
+
+});

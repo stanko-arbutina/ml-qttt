@@ -1,0 +1,5 @@
+QTTT.GameOrganizer = {
+    new: function(opts){
+	
+    }
+}
