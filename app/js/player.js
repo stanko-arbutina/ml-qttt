@@ -3,8 +3,8 @@ QTTT.Player = {
 	return {
 	    ident: opts.ident,
 	    is_human: true,
-	    playMove: function(){
-		eve('playerMove.'+this.ident);
+	    playMove: function(move){
+		eve('playerMove.'+this.ident,move);
 	    }
 	};
     }
