@@ -24,8 +24,39 @@ QTTT.BoardView = {
 		    this._human_buffer = [];
 		    this.setState();
 		}
-	    }
-	}
+	    },
+	    _highlight_all: function(arr){
+		var disp = this.board_display;
+		$.each(arr,function(index,mark_el){
+		    disp.fields[mark_el.field].marks[mark_el.mark].highlight();
+		});
+	    },
+	    _unhighlight_all: function(arr){
+		var disp = this.board_display;
+		$.each(arr,function(index,mark_el){
+		    disp.fields[mark_el.field].marks[mark_el.mark].unhighlight();
+		});
+	    },
+	    _activate: function(arr,that){
+		return (function(index, mark_el){
+		    that.board_display.fields[mark_el.field].marks[mark_el.mark].hover(
+			function(){
+			    that._highlight_all(arr);
+			}, function(){
+			    that._unhighlight_all(arr);
+			}, 
+			that,
+			that
+		    );// end hover
+		});//end return
+	    },
+	    cycle: function(first, second){
+		var that = this;
+		$.each(first, that._activate(first,that));
+		$.each(second, that._activate(second,that));
+	    }// end cycle
+
+	}//end obj
 	obj.status('Igra je počela!');
 	obj.setState();
 	eve.on("click.field.*", function(){
@@ -38,6 +69,11 @@ QTTT.BoardView = {
 		obj.board_display.fields[field].add(obj.game.currentFieldMark());
 		obj.human_buffer(field);
 	    }
+	});
+	eve.on("component.cycle", function(arg){
+	    obj.status('Zatvoren je ciklus - slijedeći igrač obavlja mjerenje.');
+	    var fields_in_cycle = this; //eve
+	    var moves = this.game.move_list.for_component(fields_in_cycle);
 	});
 	return obj;
     }// end new

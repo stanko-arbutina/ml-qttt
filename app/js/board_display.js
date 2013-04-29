@@ -24,19 +24,23 @@ QTTT.BoardDisplay = {
 		chr = p.path(pstr);
 	    }
 	    chr.attr({'stroke-width': s_margin});
+	    var rect = p.rect(x,y,size,size).attr({'fill-opacity': 0, 'stroke-width': 0, 'fill': '00F'});
 	    var index = p.text(x+size-s_margin,y+size-margin,type[1]).attr({"font-size": margin});
 	    return {
 		_chr: chr,
 		_index: index,
+		_rect: rect,
 		type: type[0],
 		index: type[1],
-		activate: function(){
-		    //todo
+		highlight: function(){
+		    this._glow = this._chr.glow();
 		},
-		deactivate: function(){
-		    //todo
+		unhighlight: function(){
+		    this._glow.remove();
+		},
+		hover: function(mouse_in, mouse_out, context_in, context_out){
+		    this._rect.hover(mouse_in,mouse_out, context_in, context_out);
 		}
-		//on hover generiraj neki event
 	    };
 	}// end Mark.new	
     },//end Mark
@@ -54,13 +58,13 @@ QTTT.BoardDisplay = {
 		});
 	    return {
 		num_marks: 0,
-		marks: [],
+		marks: {},
 		_p: p,
 		_x: x,
 		_y: y,
 		_mark_size: total_size/3,
 		add: function(mark_type){
-		    this.marks.push(QTTT.BoardDisplay.Mark.new({
+		    this.marks[mark_type] = (QTTT.BoardDisplay.Mark.new({
 			paper: this._p,
 			x: this._x + (this.num_marks % 3)*this._mark_size,
 			y: this._y + Math.floor(this.num_marks/3)*this._mark_size,

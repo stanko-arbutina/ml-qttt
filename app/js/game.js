@@ -2,10 +2,11 @@ QTTT.Game = {
     new: function(opts){
 	x_player = opts.x_player;
 	o_player = opts.o_player;
-	matrix  = QTTT.STATE_REPRESENTATIONS.Neighborhood_Matrix.new();
 	var obj= {
 	    x_player: x_player,
 	    o_player: o_player,
+	    move_list: QTTT.Move.MoveList.new(),
+	    state: QTTT.STATE_REPRESENTATIONS.SIMPLE.new(),
 	    move_number: 1,
 	    _odd_move: function(arg1, arg2){
 		if ((this.move_number % 2)==0) return arg2;
@@ -21,7 +22,8 @@ QTTT.Game = {
 		return (this.currentMark()+''+this.move_number);
 	    },
 	    playMove: function(move){
-		console.log(move);
+		this.state.playMove(move);
+		this.move_list.add(move);
 		this.move_number+=1;
 	    }
 	};
