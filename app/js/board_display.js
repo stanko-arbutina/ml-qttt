@@ -33,10 +33,11 @@ QTTT.BoardDisplay = {
 		type: type[0],
 		index: type[1],
 		highlight: function(){
-		    this._glow = this._chr.glow();
+		    if (!this._glow) this._glow = this._chr.glow();
+		    this._glow.show();
 		},
 		unhighlight: function(){
-		    this._glow.remove();
+		    this._glow.hide();
 		},
 		hover: function(mouse_in, mouse_out, context_in, context_out){
 		    this._rect.hover(mouse_in,mouse_out, context_in, context_out);

@@ -1,10 +1,8 @@
 QTTT.Game = {
     new: function(opts){
-	x_player = opts.x_player;
-	o_player = opts.o_player;
 	var obj= {
-	    x_player: x_player,
-	    o_player: o_player,
+	    x_player: opts.x_player,
+	    o_player: opts.o_player,
 	    move_list: QTTT.Move.MoveList.new(),
 	    state: QTTT.STATE_REPRESENTATIONS.SIMPLE.new(),
 	    move_number: 1,
@@ -16,15 +14,17 @@ QTTT.Game = {
 		return this._odd_move('X','O');
 	    },
 	    currentPlayer: function(){
-		return this._odd_move(x_player,o_player);
+		return this._odd_move(this.x_player,this.o_player);
 	    },
 	    currentFieldMark: function(){
 		return (this.currentMark()+''+this.move_number);
 	    },
 	    playMove: function(move){
-		this.state.playMove(move);
 		this.move_list.add(move);
 		this.move_number+=1;
+		if (list = this.state.playMove(move)){
+		    eve("component.cycle",list);
+		}	
 	    }
 	};
 	eve.on('playerMove.*', function(){

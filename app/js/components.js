@@ -18,7 +18,8 @@ QTTT.Components  = {
 		},
 		merge: function(other){
 		    c = QTTT.Components.Component.new();
-		    this.each(function(index, value){ c.add(this.get(i))});
+		    var that = this;
+		    this.each(function(index, value){ c.add(that.get(i))});
     		    other.each(function(index, value){ c.add(other.get(i))});
 		    return c;
 		}
@@ -48,27 +49,29 @@ QTTT.Components  = {
 		    if ((first_index>-1) || (second_index>-1)){
 			if (first_index == -1){
 			    this.comps[second_index].add(first);
-			    return 0;
+			    return false;
 			}
 			if (second_index == -1){
 			    this.comps[first_index].add(second);
-			    return 0;
+			    return false;
 			}
 			if (first_index!=second_index){
 			    this.comps[first_index] = this.comps[first_index].merge(this.comps[second_index]);
 			    this.comps.splice(second_index,1);
 			} else {
 			    this.comps[first_index].cycle = true;
+			    return this.comps[first_index]._arr;
 			}
 		    } else {
 			c = QTTT.Components.Component.new();
 			c.add(first);
 			c.add(second);
 			this.comps.push(c);
-		    }
-		}
-	    }
-	}
+			return false;
+		    } //end if (first_index>-1) || (second_index>-1)
+		}//end add()
+	    }; //end return
+	} // end ComponentList#new
     }//end ComponentList
 
 }

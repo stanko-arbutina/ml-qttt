@@ -11,7 +11,7 @@ QTTT.Move = {
 		    moves = [];
 		    for (i = 0;i<this._list.length;i++)
 			if ((arr.indexOf(this._list[i].first)>-1) || (arr.indexOf(this._list[i].second)>-1))
-			    moves.push(this._list[i]);
+			    moves.push({move: this._list[i], move_index: (i+1)});
 		    return moves;
 		}
 	    };

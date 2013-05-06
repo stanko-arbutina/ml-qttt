@@ -43,7 +43,7 @@ QTTT.STATE_REPRESENTATIONS = {
 		
 		playMove: function(move){
 		    this.matrix.set(move.first, move.second, this.move_number);
-		    this.components.add(move.first, move.second);
+		    return (this.components.add(move.first, move.second)); //vraća true ako je zatvoren ciklus
 		}
 	    };
 	},
@@ -65,5 +65,14 @@ $(function(){
 
 });
 
+//ciklus u svoju klasu koja ga priprema (kao component, util)
+//proširiti move tako da podržava i razrješenje ciklusa
+//click event na human playeru koji razrješava ciklus
+//maknuti stateove sa viewa, player (human) "ukrašava" game board view
+//detektirati kraj igre (na state_representationu) i završiti je
+//state vadi listu mogućih poteza
+
+
 //dummy računalni igrač (samo da stavlja znakove, da vidim tok podataka - nekako mu treba signalizirati da je na potezu?
+
 //state, move, ciklusi, legalni potezi
