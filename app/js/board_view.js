@@ -5,6 +5,7 @@ QTTT.BoardView = {
 	    status_container: opts.status_container,
 	    board_display: QTTT.BoardDisplay.new(opts.game_container),
 	    game: opts.game,
+	    in_cycle: false,
 	    setState: function(){
 		if (this.game.currentPlayer().is_human) this.state = 'human_input';
 		else this.state = 'computer_output';
@@ -49,7 +50,7 @@ QTTT.BoardView = {
 			that
 		    );// end hover
 		    that.board_display.fields[mark_el.field].marks[mark_el.mark]._rect.click(function(){
-
+			console.log(this);
 		    });
 		});//end return
 	    },
@@ -60,6 +61,7 @@ QTTT.BoardView = {
 		//ono što je u jednom polju će se zajedno aktivirati
 		$.each(first, that._activate(first,that));
 		$.each(second, that._activate(second,that));
+		that.game.in_cycle = true;
 	    }// end cycle
 
 	}//end obj
@@ -67,6 +69,7 @@ QTTT.BoardView = {
 	obj.setState();
 	eve.on("click.field.*", function(){
 	    if (obj.state == 'human_input') {
+		if (!obj.game.in_cycle){
 		var field = Number(eve.nt().split('.')[2]);
 
 		//ako je polje slobodno
@@ -74,6 +77,7 @@ QTTT.BoardView = {
 		//push je kada skupimo dva i odigramo ih na pravi board
 		obj.board_display.fields[field].add(obj.game.currentFieldMark());
 		obj.human_buffer(field);
+		}
 	    }
 	});
 	eve.on("component.cycle", function(arg){
@@ -81,51 +85,8 @@ QTTT.BoardView = {
 	    if (obj.state == 'human_input'){
 		var fields_in_cycle = this; //eve
 		var moves = obj.game.move_list.for_component(fields_in_cycle);
-		var preselect = {};
-		$.each(moves, function(index, move_obj){
-		    t_mark = ( ( ((move_obj.move_index % 2)==0) ? 'O' : 'X') + move_obj.move_index)
-		    if (!(preselect[move_obj.move.first])) preselect[move_obj.move.first] = [];
-		    if (!(preselect[move_obj.move.second])) preselect[move_obj.move.second] = [];
-		    preselect[move_obj.move.first].push(t_mark);
-		    preselect[move_obj.move.second].push(t_mark);
-		});
-		removes = [];
-		for (key in preselect){
-		    if (preselect[key].length == 1){
-			removes.push(preselect[key][0]);
-		    }
-		}
-		for (key in preselect){
-		    if (preselect[key].length> 1){
-			tmp = [];
-			for (i=0;i<preselect[key].length;i++)
-			    if (removes.indexOf(preselect[key][i])<0) tmp.push(preselect[key][i]);
-			preselect[key]=tmp;
-		    }
-		}
-		first = [];
-		second = [];
-		first_marks = [];
-		for (key in preselect){
-		    if (preselect[key].length == 1){
-			first.push({field: key, mark: preselect[key][0]});
-			second.push({field: key, mark: preselect[key][0]});
-		    } else {
-			var one = preselect[key][0];
-			var two = preselect[key][1];
-			if (first_marks.indexOf(one)==-1){
-			    first.push({field: key, mark: one});
-			    second.push({field: key, mark: two})
-			    first_marks.push(one);
-			} else {
-			    first.push({field: key, mark: two});
-			    second.push({field: key, mark: one});
-			    first_marks.push(two);
-			}
-		    }
-		}
-		
-		obj.cycle(first,second);
+		rez = QTTT.Components.CycleResolver(moves, fields_in_cycle);		
+		obj.cycle(rez.first,rez.second);
 	    };
 	});
 	return obj;

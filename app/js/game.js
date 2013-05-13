@@ -1,6 +1,7 @@
 QTTT.Game = {
     new: function(opts){
 	var obj= {
+	    in_cycle: false,
 	    x_player: opts.x_player,
 	    o_player: opts.o_player,
 	    move_list: QTTT.Move.MoveList.new(),
@@ -23,6 +24,7 @@ QTTT.Game = {
 		this.move_list.add(move);
 		this.move_number+=1;
 		if (list = this.state.playMove(move)){
+		    this.in_cycle = true;
 		    eve("component.cycle",list);
 		}	
 	    }
