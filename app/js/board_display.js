@@ -1,4 +1,7 @@
 //služi za grafičku reprezentaciju ploče kada je potrebna
+
+//Field i mark i board razbiti u display, behaviour i events
+//mark ima svoj markIndex po kojem se pamti
 QTTT.BoardDisplay = {
     Mark: {
 	new: function(opts){
@@ -55,7 +58,7 @@ QTTT.BoardDisplay = {
 	    p.rect(x,y,total_size,total_size).
 		attr({fill: '00F', 'fill-opacity': 0, 'stroke-width': 0}).
 		click(function(){
-		    eve("click.field."+opts.index);
+		    eve("display.click.field", Number(opts.index));
 		});
 	    return {
 		num_marks: 0,
@@ -113,7 +116,48 @@ QTTT.BoardDisplay = {
 		    size: this._size/3,
 		    index: i
 		}));
-	    }//end BoardDisplay#init
+	    },//end BoardDisplay#init
+	    _highlight_all: function(arr){
+		var disp = this;
+		$.each(arr,function(index,mark_el){
+		    disp.fields[mark_el.field].marks[mark_el.mark].highlight();
+		});
+	    },
+	    _unhighlight_all: function(arr){
+		var disp = this;
+		$.each(arr,function(index,mark_el){
+		    disp.fields[mark_el.field].marks[mark_el.mark].unhighlight();
+		});
+	    },
+	    _activate: function(arr,disp){
+		return (function(index, mark_el){
+		    var mark = disp.fields[mark_el.field].marks[mark_el.mark];
+		    mark.hover(
+			function(){
+			    disp._highlight_all(arr);
+			}, function(){
+			    disp._unhighlight_all(arr); //možda ih i povećati i smanjiti dinamički
+			}, 
+			disp,
+			disp
+		    );// end hover
+
+		    mark._rect.click(function(){
+			eve('display.measurment',{field: mark_el.field, 
+				     mark: mark.type+mark.index
+				    });
+		    });
+		});//end return
+	    },
+	    cycle: function(first, second){
+		var that = this;
+		//first i second su arrayi elemenata koji određuju ciklus
+		//mark_el {field: 0, mark: 'X1'} npr.
+		//ono što je u jednom polju će se zajedno aktivirati
+		$.each(first, that._activate(first,that));
+		$.each(second, that._activate(second,that));
+	    }// end cycle
+
 	};
 	board_display.init();
 	return board_display;

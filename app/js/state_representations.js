@@ -43,7 +43,8 @@ QTTT.STATE_REPRESENTATIONS = {
 		
 		playMove: function(move){
 		    this.matrix.set(move.first, move.second, this.move_number);
-		    return (this.components.add(move.first, move.second)); //vraća true ako je zatvoren ciklus
+		    if (this.components.add(move.first, move.second)) //true ako je ciklus
+			eve('state.cycle');
 		}
 	    };
 	},
@@ -57,15 +58,20 @@ $(function(){
     var p1 = QTTT.Player.new({ident: "Stanko"});
     var p2 = QTTT.Player.new({ident: "Stankov protivnik"});
     var game = QTTT.Game.new({x_player: p1, o_player: p2});
-    window.board_view = QTTT.BoardView.new({
+    window.input_collector = QTTT.BoardViewInputCollector.new({
+	game_container: 'raphael_container',
+	status_container: 'status',
+	game: game
+    });
+    window.ui = QTTT.BoardViewUIOrchestrator.new({
 	game_container: 'raphael_container',
 	status_container: 'status',
 	game: game
     });
 
+
 });
 
-//ciklus u svoju klasu koja ga priprema (kao component, util)
 //proširiti move tako da podržava i razrješenje ciklusa
 //click event na human playeru koji razrješava ciklus
 //maknuti stateove sa viewa, player (human) "ukrašava" game board view

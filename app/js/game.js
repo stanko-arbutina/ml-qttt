@@ -4,7 +4,7 @@ QTTT.Game = {
 	    in_cycle: false,
 	    x_player: opts.x_player,
 	    o_player: opts.o_player,
-	    move_list: QTTT.Move.MoveList.new(),
+//	    move_list: QTTT.Move.MoveList.new(),
 	    state: QTTT.STATE_REPRESENTATIONS.SIMPLE.new(),
 	    move_number: 1,
 	    _odd_move: function(arg1, arg2){
@@ -21,18 +21,24 @@ QTTT.Game = {
 		return (this.currentMark()+''+this.move_number);
 	    },
 	    playMove: function(move){
-		this.move_list.add(move);
+//		this.move_list.add(move);
+                this.state.playMove(move);
 		this.move_number+=1;
-		if (list = this.state.playMove(move)){
-		    this.in_cycle = true;
-		    eve("component.cycle",list);
-		}	
+		//slanje eventa o potezu za orchestrator
+		//provjera stanja
 	    }
 	};
+	eve.on('state.cycle', function(){
+	    if (!this.in_cycle){
+		this.in_cycle = true;
+		eve('game.cycle');
+	    }
+	});
 	eve.on('playerMove.*', function(){
 	    var id = eve.nt().split('.')[1];
 	    if (obj.currentPlayer().ident == id) obj.playMove(this); //u thisu je move
 	});
 	return obj;
     }
-}
+}; //end game
+
