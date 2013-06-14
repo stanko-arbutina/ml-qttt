@@ -12,7 +12,7 @@ QTTT.BoardModels.Simple.Fields = {
 		var second_arr = [];
 		var fselector = QTTT.BoardModels.Simple.CycleResolver.new(this._fields);
 		fselector.select(fields);
-	    }
+	    },
 	    push: function(move_fragment){
 		this._fields[move_fragment.field].push(move_fragment.move_number);
 	    },

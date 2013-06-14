@@ -32,6 +32,38 @@ QTTT.BoardModels.Simple.CycleResolver = {
 		    }
 		); 
 	    },
-	    function _get_unique
+	    _remove_extra: function(unique){
+		var that = this;
+		$.each(unique, function(index, fragment){
+		    that.each(
+			function(i, el){ return ((fragment.field!=el.field)&&(el.moves.indexOf(fragment.move_number>-1)));}, function(i,el){
+			    var tmoves = el.moves.slice(0);
+			    tmoves.splice(tmoves.indexOf(fragment.move_number),1);
+			    return {
+				field: el.field,
+				moves: tmoves
+			    }
+			}
+			
+		    );
+		});
+	    },
+	    _get_unique: function(){
+		var unique = {};
+		this.each(
+		    function(index,data){return (data.moves.length==1)},
+		    function(index,data){ unique.push(QTTT.Util.MoveFragment.new( data.field, data.moves[0]))}
+		);
+		return unique;
+	    },
+	    each: function(condition_f, f){
+		for (var i=0; i< this.fields.length;i++)
+		    if (this.fields[i] && condition_f(i, this.fields[i])){
+			var ret = f(i, this.fields[i]);
+			if (ret) this.fields[i] = ret;
+		    }
+	    }
+	};
+	return obj;
     }
 };
