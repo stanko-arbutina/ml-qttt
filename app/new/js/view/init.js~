@@ -1,0 +1,19 @@
+//inicijalizira view namespace
+QTTT.View = {
+    init: function(){
+    this.$el = $('#raphael_container');
+    var screen_width = this.$el.width();
+    var screen_height = this.$el.height();
+    var size = Math.min(screen_width,screen_height);
+    this.paper = new Raphael('raphael_container', this.size, this.size);
+    }	
+
+};
+
+$(function(){
+    QTTT.View.init();
+    m = QTTT.View.Mark.new({
+	paper: QTTT.View.paper
+    });
+    m.remove();
+});

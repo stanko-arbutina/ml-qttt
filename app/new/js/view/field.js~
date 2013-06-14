@@ -1,0 +1,35 @@
+    Field: {
+	new: function(opts){
+	    var p = opts.paper;
+	    var x = opts.x || 0;
+	    var y = opts.y || 0;
+	    var total_size = opts.size || 100;
+	    p.rect(x,y,total_size,total_size).
+		attr({fill: '00F', 'fill-opacity': 0, 'stroke-width': 0}).
+		click(function(){
+		    eve("display.click.field", {index: opts.index});
+		});
+	    return {
+		num_marks: 0,
+		marks: {},
+		_p: p,
+		_x: x,
+		_y: y,
+		_mark_size: total_size/3,
+		add: function(mark_type){
+		    this.marks[mark_type] = (QTTT.BoardDisplay.Mark.new({
+			paper: this._p,
+			x: this._x + (this.num_marks % 3)*this._mark_size,
+			y: this._y + Math.floor(this.num_marks/3)*this._mark_size,
+			size: this._mark_size,
+			type: mark_type
+		    }));
+		    this.num_marks++;
+		}//end Field#add
+		//addBig
+		//removeMarks
+		//destroy
+		//on Click generiraj event
+	    };
+	}// end Field.new
+    },//end Field

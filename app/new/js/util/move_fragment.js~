@@ -1,0 +1,18 @@
+QTTT.Util = {};
+QTTT.Util.MoveFragment = {
+    new: function(field, move_number){
+	var obj = {
+	    field: field,
+	    move_number: move_number,
+	    init: function(){
+		this.move_type = this._x_o(this.move_number)+this.move_number;
+		this.id = '%'+this.field+this.move_number;
+	    },
+	    _x_o: function(){
+		return (((this.move_number % 2) == 0) ? 'O' : 'X');
+	    }
+	};
+	obj.init();
+	return obj;
+    }
+};

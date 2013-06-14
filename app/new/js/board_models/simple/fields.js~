@@ -1,0 +1,65 @@
+QTTT.BoardModels.Simple.Fields = {
+    new: function(){
+	var obj = {
+	    init: function(){
+		this._fields = [];
+		for (var i=0;i<9;i++) this._fields[i] = [];
+	    },
+	    resolve_cycle: function(fields){
+		var selected_fields = [];
+		var that = this;
+		var first_arr = [];
+		var second_arr = [];
+		$.each(fields, function(index, el){
+		    selected_fields[index] = {field: el, moves: that._fields[el].slice(0)}
+		});
+
+		for (var i=0; i< selected_fields.length; i++)
+		    if (selected_fields[i].moves.length == 1){
+			var el = selected_fields[i].moves[0];
+			first_arr.push({field: selected_fields[i].field, move: el});
+			second_arr.push({field: selected_fields[i].field, move: el});
+			for (j=(i+1);j< selected_fields.length; j++){
+			    var ind = selected_fields[j].moves.indexOf(el);
+			    if ( ind >-1)  selected_fields[j].moves.splice(ind,1);
+			}
+		    }
+		var forbidden_moves = [];
+		$.each(selected_fields, function(index,el){
+		    if (el.moves.length == 2){
+			var first = el.moves[0];
+			var second = el.moves[1];
+			if (forbidden_moves.indexOf(first) == -1){
+			    first_arr.push({field: el.field, move: first});
+			    second_arr.push({field: el.field, move: second});
+			    forbidden_moves.push(first);
+			} else {
+			    if (forbidden_moves.indexOf(second) == -1){
+				first_arr.push({field: el.field, move: second});
+				forbidden_moves.push(second);
+				second_arr.push({field: el.field, move: first});
+			    }
+			}
+		    }
+		});
+		this._first_arr = first_arr;
+		this._second_arr = second_arr;
+		return [first_arr, second_arr];
+	    },
+	    push: function(field, move_number){
+		this._fields[field].push(move_number);
+	    },
+	    rezolution: function(field, move_number){
+		var that = this;
+		selected_arr = this._first_arr;
+		$.each(that._second_arr, function(ind, el){
+		    if ((el.field == field) && (el.move_number == move_number))
+			selected_arr = this._second_arr;
+		});
+		return selected_arr;
+	    }
+	};
+	obj.init();
+	return obj;
+    }
+};

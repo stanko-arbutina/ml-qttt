@@ -43,8 +43,9 @@ QTTT.STATE_REPRESENTATIONS = {
 		
 		playMove: function(move){
 		    this.matrix.set(move.first, move.second, this.move_number);
-		    if (this.components.add(move.first, move.second)) //true ako je ciklus
-			eve('state.cycle');
+		    list = this.components.add(move.first, move.second);
+		    if (list) //true ako je ciklus
+			eve('state.cycle', list);
 		}
 	    };
 	},
@@ -58,15 +59,17 @@ $(function(){
     var p1 = QTTT.Player.new({ident: "Stanko"});
     var p2 = QTTT.Player.new({ident: "Stankov protivnik"});
     var game = QTTT.Game.new({x_player: p1, o_player: p2});
-    window.input_collector = QTTT.BoardViewInputCollector.new({
-	game_container: 'raphael_container',
-	status_container: 'status',
-	game: game
-    });
     window.ui = QTTT.BoardViewUIOrchestrator.new({
 	game_container: 'raphael_container',
 	status_container: 'status',
 	game: game
+    });
+
+    window.input_collector = QTTT.BoardViewInputCollector.new({
+	game_container: 'raphael_container',
+	status_container: 'status',
+	game: game,
+	board_display: window.ui.board_display
     });
 
 

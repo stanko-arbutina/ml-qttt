@@ -1,0 +1,71 @@
+//inicijalizira view control namespace
+QTTT.ViewControl = {};
+
+$(function(){
+    boardview = QTTT.ViewControl.BoardControl.new('#raphael_container');
+    game_ref = QTTT.GameReferee.new();
+    mouse = QTTT.ViewControl.MouseControl.new();
+    mouse.on();
+});
+
+
+/* kontrolira prikaz cijelog boarda
+   board = Board.new({
+     paper: Raphael paper objekt na kojem se crta,
+     x,y: integeri gdje se crta (0,0),
+     size: veličina kvadrata(300),
+   })
+   
+   
+   board.init() - resetira sve komponente (opcije ostaju) - nema potrebe da kod više igara instanciramo više
+                  raphael papera
+   board.remove() - miče sve elemente s ekrana
+   board.add({
+     field: koje polje,
+     mark_type: koji znak,
+     mark_id: koji mu je id,
+   })
+   board.addBig([{field: 'koje_polje', type: 'koji znak'},..])
+
+   board.glow(mark_ids) - polje
+   board.unglow(mark_ids) - polje
+
+
+*/
+
+
+/* kontrolira jedan kvadrat ekrana (od 9 na ploči)
+   field = Field.new({
+     paper: Raphael paper objekt na kojem se crta,
+     x,y: integeri gdje se crta (0,0),
+     size: veličina kvadrata(100),
+     id: što šalje na klik
+   });
+   stvara 'view.field.click' event, sa svojim id-om kao parametrom za handler
+
+
+   field.add(markType,id) - dodaje mali mark s typeom markType ('X1', 'O2') i idom id;
+   field.addBig(markType) - briše sve svoje markove i dodaje jedan veliki (id mu ne treba jer se neće klikati)
+   field.remove() - briše sve elemente s ekrana
+
+*/
+
+/* crta pomoću raphaela jedan znak (mali križić ili kružić sa subskriptom)
+   mark = Mark.new({
+     paper: Raphael paper objekt na kojem se crta,
+     x,y: integeri gdje se crta (0,0),
+     size: veličina kvadrata(100),
+     type: 'X1' ili 'O4' ('X1'),
+     id: što šalje na klik i na mouseover/out ('mark')
+   });
+   
+   mark.remove(); - briše se s papira
+   mark.glow(); - stavlja glow
+   mark.unglow(); - miće glow
+   mark.activate(); - šalje
+     - 'view.mark.click','view.mark.over' i 'view.mark.out' eventove,
+        parametar za handler je id
+   
+   *** 
+     mark.deactivate() ? nije potrebno jer u našoj igri remove uvijek slijedi
+*/

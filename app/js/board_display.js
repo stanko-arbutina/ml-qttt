@@ -58,7 +58,7 @@ QTTT.BoardDisplay = {
 	    p.rect(x,y,total_size,total_size).
 		attr({fill: '00F', 'fill-opacity': 0, 'stroke-width': 0}).
 		click(function(){
-		    eve("display.click.field", Number(opts.index));
+		    eve("display.click.field", {index: opts.index});
 		});
 	    return {
 		num_marks: 0,
@@ -101,7 +101,6 @@ QTTT.BoardDisplay = {
 	pstr+="M"+margin+","+2*size/3;
 	pstr+="L"+(size+margin)+","+2*size/3;
 	var grid = paper.path(pstr).attr({"stroke-width": 5});
-	
 	var board_display = {
 	    _margin: margin,
 	    fields: [],

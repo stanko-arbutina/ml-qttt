@@ -1,0 +1,5 @@
+QTTT.Player = {
+    return {
+	is_human: true
+    }
+};

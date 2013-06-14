@@ -1,0 +1,3 @@
+MoveFragment klasa
+	     - ima field, move_number
+	     - vraća move_type, id

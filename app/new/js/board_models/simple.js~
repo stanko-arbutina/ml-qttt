@@ -1,0 +1,168 @@
+QTTT.BoardModels.Simple = {
+    Fields: {
+	new: function(){
+	    var obj = {
+		init: function(){
+		    this._fields = [];
+		    for (var i=0;i<9;i++) this._fields[i] = [];
+		},
+		resolve_cycle: function(fields){
+		    var selected_fields = [];
+		    var that = this;
+		    var first_arr = [];
+		    var second_arr = [];
+		    $.each(fields, function(index, el){
+			selected_fields[index] = {field: el, moves: that._fields[el].slice(0)}
+		    });
+
+		    for (var i=0; i< selected_fields.length; i++)
+			if (selected_fields[i].moves.length == 1){
+			    var el = selected_fields[i].moves[0];
+			    first_arr.push({field: selected_fields[i].field, move: el});
+			    second_arr.push({field: selected_fields[i].field, move: el});
+			    for (j=(i+1);j< selected_fields.length; j++){
+				var ind = selected_fields[j].moves.indexOf(el);
+				if ( ind >-1)  selected_fields[j].moves.splice(ind,1);
+			    }
+			}
+		    var forbidden_moves = [];
+		    $.each(selected_fields, function(index,el){
+			if (el.moves.length == 2){
+			    var first = el.moves[0];
+			    var second = el.moves[1];
+			    if (forbidden_moves.indexOf(first) == -1){
+				first_arr.push({field: el.field, move: first});
+				second_arr.push({field: el.field, move: second});
+				forbidden_moves.push(first);
+			    } else {
+				if (forbidden_moves.indexOf(second) == -1){
+				    first_arr.push({field: el.field, move: second});
+				    forbidden_moves.push(second);
+				    second_arr.push({field: el.field, move: first});
+				}
+			    }
+			}
+		    });
+		    this._first_arr = first_arr;
+		    this._second_arr = second_arr;
+		    return [first_arr, second_arr];
+		},
+		push: function(field, move_number){
+		    this._fields[field].push(move_number);
+		},
+		rezolution: function(field, move_number){
+		    var that = this;
+		    selected_arr = this._first_arr;
+		    $.each(that._second_arr, function(ind, el){
+			if ((el.field == field) && (el.move_number == move_number))
+			    selected_arr = this._second_arr;
+		    });
+		    return selected_arr;
+		}
+	    };
+	    obj.init();
+	    return obj;
+	}
+    },
+    Components: {
+	new: function(){
+	    var obj = {
+		_first: true,
+		_components: [],
+		cycle: false,
+		init: function(){
+
+		},
+		reset: function(){
+		    this._components = [];
+		    this.cycle = false;
+		    this.first = true;
+		},
+		started_field: function(field){
+		    return ((!this._first) && (this._first_field == field));
+		},
+		add: function(field, move_number){
+		    var that = this;
+		    var which_component = this._component_for_field(field);
+		    if (this._first){
+			this._first_field = field;
+			this._first_component = which_component;
+			if (this._first_component == -1){
+			    this._components.push([]);
+			    this._first_component = this._components.length-1;
+			    this._first_c().push(field);
+			}
+			this._first = false;
+		    } else {
+			if (which_component == -1){
+			    this._components[this._first_component].push(field);
+			} else {
+			    if (which_component != this._first_component){
+				this._components[this._first_component] = this._first_c().concat(this._components[which_component]);
+				this._components.splice(which_component,1);
+			    } else {
+				this.cycle = which_component;
+			    }
+			}
+			
+			this._first = true;
+		    }		   
+		},
+		_first_c: function(){
+		    return this._components[this._first_component];
+		},
+		_component_for_field: function(field){
+		    var that = this;
+		    var comp_num = -1;
+		    $.each(that._components, function(i, comp){			    
+			if (comp.indexOf(field)>-1) comp_num = i;
+		    });
+		    return comp_num;
+		}
+	    };
+	    obj.init();
+	    return obj;
+	}
+    },
+    new: function(){
+	var obj = {
+	    init: function(){
+		this._classic = [];
+		this._components = QTTT.BoardModels.Simple.Components.new();
+		this._fields  = QTTT.BoardModels.Simple.Fields.new();
+		for (var i=0;i<9;i++) this._classic[i]=0;
+	    },
+	    legalmove: function(field){
+		return (this._classic[field]==0) && (!this._components.started_field(field));
+	    },
+	    resolve: function(field, move_number){
+		var that = this;
+		var rez = this._fields.rezolution(field, move_number);
+		$.each(rez, function(ind,el){ that._classic[el.field] = el.move_number});
+		that._components.reset();
+		eve('board.uncycle', {}, rez);
+		//provjeriti kraj igre
+	    },
+	    add: function(field, move_number, label){
+		var mark_id = '%'+field+move_number;
+		this._fields.push(field, move_number);
+		this._components.add(field, move_number);
+		eve('board.add',{},{
+		    field: field, 
+		    mark_type: label,
+		    mark_id: mark_id
+		});
+		if (this._components.cycle){
+		    var resolve = this._fields.resolve_cycle(this._components._components[this._components.cycle]);
+		    var first_arr = [];
+		    var second_arr = [];
+		    $.each(resolve[0], function(i,el){ first_arr.push('%'+el.field+el.move);});
+		    $.each(resolve[1], function(i,el){ second_arr.push('%'+el.field+el.move);});
+		    eve('board.cycle',{},{first: first_arr, second: second_arr});
+		}
+	    }
+	};
+	obj.init();
+	return obj;
+    }//end new
+};

@@ -1,0 +1,4 @@
+QTTT.Game = {
+    new: function(){
+    }
+}
