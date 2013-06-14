@@ -31,11 +31,11 @@ QTTT.BoardModels.Simple.Board = {
 		    mark_id: move_fragment.id
 		});
 		if (this._components.cycle){
-		    var resolve = this._fields.resolve_cycle(this._components._components[0]);//this._components.cycle]);
+		    var resolve_arr = this._fields.cycle_components(this._components.cyclic_component);
 		    var first_arr = [];
 		    var second_arr = [];
-		    $.each(resolve[0], function(i,el){ first_arr.push(el.id);});
-		    $.each(resolve[1], function(i,el){ second_arr.push(el.id);});
+		    $.each(resolve_arr[0], function(i,el){ first_arr.push(el.id);});
+		    $.each(resolve_arr[1], function(i,el){ second_arr.push(el.id);});
 		    eve('board.cycle',{},{first: first_arr, second: second_arr});
 		}
 	    }
