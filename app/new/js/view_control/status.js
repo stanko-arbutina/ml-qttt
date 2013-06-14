@@ -26,7 +26,9 @@ QTTT.ViewControl.Status = {
 		eve.on('board.uncycle', function(){
 		    out.print('Ciklus je razriješen!');
 		});
-
+		eve.on('game.finished', function(score){
+		    out.print('Igra je završena s rezultatom ' +score+'!');
+		});
 	    }
 	};
 

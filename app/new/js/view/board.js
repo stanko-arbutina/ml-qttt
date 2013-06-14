@@ -49,8 +49,8 @@ QTTT.View.Board = {
 		    })
 		);
 	    },
-	    add: function(opts){
-		this._marks[opts.mark_id] = this._fields[opts.field].add(opts.mark_type, opts.mark_id);
+	    add: function(move_fragment){
+		this._marks[move_fragment.id] = this._fields[move_fragment.field].add(move_fragment.mark_type, move_fragment.id);
 	    },
 	    activate_mark: function(mark_id){
 		this._marks[mark_id]._activate();

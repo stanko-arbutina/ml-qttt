@@ -1,0 +1,9 @@
+QTTT.GameBoard = {
+    new: function(){
+	var obj = {
+	    init: function(){
+		this.board = QTTT.BoardModels.Simple.Board.new();
+	    }
+	};
+    }
+}

@@ -1,0 +1,9 @@
+QTTT.BoardModels.Simple.Classic = {
+    new: function(){
+	var obj = {
+	    init: function(){
+		this.fragments = [];
+	    }
+	}
+    }
+}

@@ -45,10 +45,10 @@ QTTT.ViewControl.MouseControl = {
 				eve('boardcontrol.mouseout',{}, param);
 			    }
 			    if (subtype == 'click'){
-				that._player.resolve({
-				    field: Number(param[1]),
-				    move_number: Number(param.slice(2))
-				});
+				that._player.resolve(QTTT.Util.MoveFragment.new(
+				    Number(param[1]),
+				    Number(param.slice(2)) 
+				));
 			    }
 			}
 		    }

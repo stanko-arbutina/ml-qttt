@@ -23,7 +23,9 @@ QTTT.ViewControl.BoardControl = {
 		eve.on('board.add', function(el){
 		    that.board.add(el);
 		});
-
+		eve.on('board.addBig', function(el){
+		    that.board.addBig([el]);
+		});
 		eve.on('boardcontrol.mouseover', function(param){
 		    that._all_els(function(coll){ that.board.glow(coll)}, param);
 		});

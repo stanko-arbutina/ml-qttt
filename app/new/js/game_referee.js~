@@ -1,3 +1,5 @@
+
+
 QTTT.GameReferee = {
     new: function(opts){
 
@@ -32,27 +34,29 @@ QTTT.GameReferee = {
 	    //private
 	    _init: function(){
 		var that  = this;
-		this.board = QTTT.BoardModels.Simple.new();
+		this.board = QTTT.BoardModels.Simple.Board.new();
 		eve.on('player.*', function(param){
 		    if (that.currentPlayer().id == param.id){
 			var type = eve.nt().split('.')[1];
 			if (type == 'add'){
-			    that._add(param.field);
+			    move_fragment = QTTT.Util.MoveFragment.new(param.field, that.move_number);
+			    that._add(move_fragment);
 			}
 			if (type == 'resolve'){
-			    that._resolve(param.resolve);
+			    move_fragment = QTTT.Util.MoveFragment.new(param.resolve.field, param.resolve.move_number);
+			    that._resolve(move_fragment);
 			}
 		    }
 		});
 	    },
-	    _resolve: function(resolve){
+	    _resolve: function(move_fragment){
 		var that = this;
-		this.board.resolve(resolve.field, resolve.move_number);
+		this.board.resolve(move_fragment);
 	    },
-	    _add: function(field){
+	    _add: function(move_fragment){
 		var that = this;
-		if (this.board.legalmove(field)){
-		    this.board.add(field, this.move_number, that.currentFieldMark());
+		if (this.board.legalmove(move_fragment)){
+		    this.board.add(move_fragment);
 
 
 		    //ovo odgovara pushanju u move list i detekciji kada je potez završio

@@ -1,19 +1,4 @@
-/*
-  reprezentacija ljudskog igrača - na sličan način možemo raditi i s online igračem
-  kažemo mu da je na redu  - tada skupljamo eventove izvana (input - u ovom slučaju miš, može npr. biti
-  i ajax pozivatelj - to će nam biti umjesto mousea
-
-  human = Human.new(name.id);
-  human.name()
-  human.id
-  human.play();
-  human.dont_play()
-
-  vjerojatno ćemo proširiti tako da playu šaljemo board ili listu poteza
-
-*/
-
-QTTT.Players.Human = {
+QTTT.Players.Computer = {
     new: function(name,id){
 	var obj = {
 	    _my_turn: false,	   
