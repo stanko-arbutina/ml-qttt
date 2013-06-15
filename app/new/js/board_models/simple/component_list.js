@@ -4,11 +4,14 @@ QTTT.BoardModels.Simple.ComponentList = {
 	    init: function(){
 		this._components = [];
 	    },
+	    by_index: function(ind){
+		return this._components[ind];
+	    },
 	    for_field: function(field){
 		var that = this;
 		var c = -1;
 		$.each(that._components, function(index, comp){
-		    if (comp.contains(field)) c=comp;
+		    if (comp.contains(field)) c=index;
 		});
 		return c;
 	    },

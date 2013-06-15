@@ -25,6 +25,7 @@ QTTT.GameReferee = {
 	    //private
 	    _init: function(){
 		var that  = this;
+		this.move_list = QTTT.Util.MoveList.new();
 		this.board = QTTT.GameBoard.new();
 		eve.on('player.*', function(param){
 		    if (that.currentPlayer().id == param.id){
@@ -33,16 +34,13 @@ QTTT.GameReferee = {
 			    move_fragment = QTTT.Util.MoveFragment.new(param.field, that.move_number);
 			 else move_fragment = param.move_fragment;
 			if (that.board.playMoveFragment(type, move_fragment)){
-			    //izgraditi potez
-			    //provjeriti stanje - promjena turna ili kraj igre
-			}
-			    //ostaje provjeriti status i napisati eventualnu poruku o kraju
-			if (type == 'add'){
-			    //ovo odgovara pushanju u move list i detekciji kada je potez završio
-			    that._num_moves++;
-			    if (that._num_moves == 2){
-				that.playMove();
-				that._num_moves = 0;
+			    that.move_list.push(type,move_fragment)
+			    if (that.board.finished){
+				that.x_player.dont_play();
+				that.o_player.dont_play();
+				//poslati skor na server
+			    } else {
+				if (that.move_list.finished()) that.playMove();
 			    }
 			}
 		    }

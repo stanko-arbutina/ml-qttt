@@ -34,7 +34,6 @@ QTTT.BoardModels.Simple.Board = {
 		    this._components.add(move_fragment.field);
 		    eve('board.add',{},move_fragment);
 		}
-
 		if (this._components.cycle){
 		    var resolve_arr = this._fields.cycle_components(this._components.cyclic_component);
 		    var first_arr = [];

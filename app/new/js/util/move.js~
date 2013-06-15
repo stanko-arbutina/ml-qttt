@@ -1,0 +1,7 @@
+QTTT.Util.Move = {
+    new: function(){
+	var obj = {
+	};
+	return obj;
+    }
+}

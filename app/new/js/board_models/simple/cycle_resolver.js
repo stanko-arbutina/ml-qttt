@@ -1,107 +1,142 @@
-QTTT.BoardModels.Simple.CycleResolver = {
-    new: function(fields){
+QTTT.BoardModels.Simple.Components = {
+    new: function(){
 	var obj = {
-	    all_fields: fields,
-	    select: function(fields){
-		var selected_fields = [];
-		var that  = this;
-		$.each(fields, function(index, el){
-		    selected_fields[index] = {field: el, moves: that.all_fields[el].slice(0)}
-		});
-		this.fields = selected_fields;
+	    add: function(fragment){
+		var c = this._get_component_for_field(fragment.field);
+		if (!this._comps[c]) this._comps[c] = [];
+		this._comps[c].push(fragment.id);
 	    },
-	    resolve_cycle: function(fs){
-		this.select(fs);
-		unique = this._get_unique();
-		this._remove_extra(unique);
-		this.unique=this._get_unique();
-		fragments_selected = false;
-		var fragment1 = '';
-		var fragment2 = '';
-		this.each(
-		    function(index, data){ 
-			return ((!fragments_selected) && (data.moves.length == 2));
-		    },
-		    function(index, data){
-			fragments_selected = true;
-			fragment1 = QTTT.Util.MoveFragment.new(data.field, data.moves[0]); 
-			fragment2 = QTTT.Util.MoveFragment.new(data.field, data.moves[1]); 
-		    }
-		);		
-		this.tail1 = this._get_resolution_tail(fragment1);
-		this.tail2 = this._get_resolution_tail(fragment2);
-		this.first_rezolution = this.unique.concat(this.tail1);
-		this.second_rezolution = this.unique.concat(this.tail2);
+	    _init: function(){
+		this._comps = [];
+		this._components_for_fields = [];
+	
 	    },
-	    rezolution_for_fragment: function(move_fragment){
-		var that = this;
-		rez = this.first_rezolution;
-		$.each(that.second_rezolution, function(ind, res_fragment){
-		    if (move_fragment.eql(res_fragment)) rez = that.second_rezolution;
-		})
-		return rez;
-	    },
-	    _get_resolution_tail: function(move_fragment){
-		var that = this;
-		var tail = [];
-		var forbidden_moves = [];
-		tail.push(move_fragment);
-		forbidden_moves.push(move_fragment.move_number);
-		this.each(
-		    function(index, data){return (data.field!=move_fragment.field) && (data.moves.length == 2)},
-		    function(index,data){
-			var move  = data.moves[0];
-			if (forbidden_moves.indexOf(move) > -1)
-			    move = data.moves[1];
-			if (forbidden_moves.indexOf(move) > -1)
-			    move = false;
-			    
-			if (move){
-			    tail.push(QTTT.Util.MoveFragment.new(data.field,move));
-			    forbidden_moves.push(move);
-			}
-		    });
-		return tail;
-	    },
-	    _remove_extra: function(unique){
-		var that = this;
-		$.each(unique, function(index, fragment){
-		    that.each(
-			function(i, el){ 
-			    if (fragment.field!=el.field)
-				if (el.moves.indexOf(fragment.move_number)>-1){
-				    return true;
-				}
-			    return false;
-			}, 
-			function(i,el){
-			    var tmoves = el.moves.slice(0);
-			    tmoves.splice(tmoves.indexOf(fragment.move_number),1);
-			    return {
-				field: el.field,
-				moves: tmoves
-			    }
-			}
-			
-		    );
-		});
-	    },
-	    _get_unique: function(){
-		var unique = [];
-		this.each(
-		    function(index,data){return (data.moves.length==1)},
-		    function(index,data){ unique.push(QTTT.Util.MoveFragment.new( data.field, data.moves[0]))}
-		);
-		return unique;
-	    },
-	    each: function(condition_f, f){
-		for (var i=0; i< this.fields.length;i++)
-		    if (this.fields[i] && condition_f(i, this.fields[i])){
-			var ret = f(i, this.fields[i]);
-			if (ret) this.fields[i] = ret;
-		    }
+	    _get_component_for_field: function(field){
+		if (!this._components_for_fields[field])
+		    this._components_for_fields[field] = this._get_new_component();
+		return this._components_for_fields[field];
 	    }
 	};
+	obj._init();
+	return obj;
+    }
+};
+
+
+
+QTTT.BoardModels.Simple.Edge = {
+    new: function(move_number,node1,node2){
+	var obj = {
+	    _init: function(){
+		this.move_number=move_number;
+		this.node1 = node1;
+		this.node2 = node2;
+	    },
+	    other: function(node){
+		if (node.field == this.node1.field) return this.node2;
+		return this.node1;
+	    }
+	};
+	obj._init();
+	return obj;
+    }
+};
+
+QTTT.BoardModels.Simple.Node = {
+    new: function(field,cid){
+	var obj = {
+	    //parent i child geteri i seteri
+	    _init: function(){
+		this.field = field;
+		this._edges = [];		
+		this.cid = cid;
+		this.cyclic  = false;
+	    },
+	    connect: function(move_number,other){
+		var edge = QTTT.BoardModels.Simple.Edge.new(move_number,this,other)
+		this._edges.push(edge);
+		other._edges.push(edge);
+		_update_component_info(other);
+	    },
+	    _update_component_info: function(other){
+		if (other.cid == this.cid){
+		    this.cyclic = true;
+		} else {
+		    other._update_cid(this.cid, this);
+		}
+	    },
+	    _update_cid: function(cid,exclude_node){
+		this.cid = cid;
+		var that = this;
+		this._nbs(function(node){
+		    node._update_cid(cid, that);
+		}, exclude_node);
+	    },
+	   _nbs: function(f, exclude_node){
+		if (!exclude_node) exclude_node = {field: -1};
+		for (var i=0; i< this._edges.length;i++){
+		    var candidate = this._edges[i].other(this);
+		    if (candidate.field != exclude_node.field) f(candidate);
+		}
+	    }
+	};
+	obj._init();
+	return obj;
+    }
+};
+
+
+QTTT.BoardModels.Simple.Graph = {
+    new: function(){
+	var obj = {
+	    _init: function(){
+		this._started = false;
+		this._nodes = {};
+		this._nodes_for_fields = [];
+		this._component_count = -1;
+	    },
+	    add: function(fragment){
+		var node = this._get_node_for_field(fragment.field);
+		if (this._started){
+		    this._started.connect(this.node);
+		    this.started = false;
+		} else {
+		    this._started = node;
+		}
+		this._nodes[fragment.id] = node;
+	    },
+	    _get_node_for_field: function(field){
+		if (!this._nodes_for_fields[field]){
+		    var new_node = QTTT.BoardModels.Simple.Node.new(field, this._get_new_component());
+		    this._nodes_for_fields[field] = new_node;
+		}    
+		return this._nodes_for_fields[field];
+	    },
+	    _get_new_component: function(){
+		this._component_count+=1;
+		return this._component_count;
+	    }
+	};
+	obj._init();
+	return obj;
+    }
+};
+
+
+
+QTTT.BoardModels.Simple.CycleResolver = {
+    new: function(){
+	var obj = {
+	    add: function(fragment){
+		//this._components.add(fragment);
+		this._graph.add(fragment);
+	    },
+	    _init: function(){
+		//this._components = QTTT.BoardModels.Simple.Components.new();
+		this._graph = QTTT.BoardModels.Simple.Graph.new();
+	    }
+	};
+	obj._init();
 	return obj;
     }
 };
