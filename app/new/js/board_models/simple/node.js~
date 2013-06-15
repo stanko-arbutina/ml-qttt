@@ -1,0 +1,42 @@
+QTTT.BoardModels.Simple.Node = {
+    new: function(field,cid){
+	var obj = {
+	    //parent i child geteri i seteri
+	    _init: function(){
+		this.field = field;
+		this._edges = [];		
+		this.cid = cid;
+		this.cyclic  = false;
+	    },
+	    connect: function(move_number,other){
+		var edge = QTTT.BoardModels.Simple.Edge.new(move_number,this,other)
+		this._edges.push(edge);
+		other._edges.push(edge);
+		_update_component_info(other);
+	    },
+	    _update_component_info: function(other){
+		if (other.cid == this.cid){
+		    this.cyclic = true;
+		} else {
+		    other._update_cid(this.cid, this);
+		}
+	    },
+	    _update_cid: function(cid,exclude_node){
+		this.cid = cid;
+		var that = this;
+		this._nbs(function(node){
+		    node._update_cid(cid, that);
+		}, exclude_node);
+	    },
+	   _nbs: function(f, exclude_node){
+		if (!exclude_node) exclude_node = {field: -1};
+		for (var i=0; i< this._edges.length;i++){
+		    var candidate = this._edges[i].other(this);
+		    if (candidate.field != exclude_node.field) f(candidate);
+		}
+	    }
+	};
+	obj._init();
+	return obj;
+    }
+};

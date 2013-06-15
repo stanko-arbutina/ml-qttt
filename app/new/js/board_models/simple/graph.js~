@@ -1,0 +1,35 @@
+QTTT.BoardModels.Simple.Graph = {
+    new: function(){
+	var obj = {
+	    _init: function(){
+		this._started = false;
+		this._nodes = {};
+		this._nodes_for_fields = [];
+		this._component_count = -1;
+	    },
+	    add: function(fragment){
+		var node = this._get_node_for_field(fragment.field);
+		if (this._started){
+		    this._started.connect(this.node);
+		    this.started = false;
+		} else {
+		    this._started = node;
+		}
+		this._nodes[fragment.id] = node;
+	    },
+	    _get_node_for_field: function(field){
+		if (!this._nodes_for_fields[field]){
+		    var new_node = QTTT.BoardModels.Simple.Node.new(field, this._get_new_component());
+		    this._nodes_for_fields[field] = new_node;
+		}    
+		return this._nodes_for_fields[field];
+	    },
+	    _get_new_component: function(){
+		this._component_count+=1;
+		return this._component_count;
+	    }
+	};
+	obj._init();
+	return obj;
+    }
+};

@@ -36,7 +36,9 @@ QTTT.ViewControl.BoardControl = {
 		    that._cycle(arg.first, arg.second);
 		});
 		eve.on('board.uncycle', function(arg){
-		    that.board.addBig(arg);
+		    var arr = [];
+		    $.each(arg, function(index, mark_id){arr.push(QTTT.Util.MoveFragment.from_id(mark_id));});
+		    that.board.addBig(arr);
 		});
 	    },
 	    _get_board: function(){
@@ -65,7 +67,7 @@ QTTT.ViewControl.BoardControl = {
 		this._first_variant = [];
 		this._second_variant = [];
 		$.each(first, function(ind,el){
-		    if (el == second[ind])
+		    if (second.indexOf(el)>-1)
 			that._common_elements.push(el);
 		    else {
 			that._first_variant.push(el);

@@ -22,23 +22,3 @@ QTTT.Util.Move = {
     }
 };
 
-QTTT.Util.MoveList = {
-    new: function(type){
-	var obj = {
-	    init: function(){
-		this.moves = [];
-	    },
-	    push: function(type, move_fragment){
-		if ((!this.current_move) || (this.finished())){
-		    this.current_move = QTTT.Util.Move.new(type);
-		}
-		this.current_move.push(move_fragment);
-	    },
-	    finished: function(){
-		return this.current_move.finished();
-	    }
-	};
-	return obj;
-    }
-};
-

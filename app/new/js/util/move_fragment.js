@@ -1,5 +1,10 @@
 QTTT.Util = {};
 QTTT.Util.MoveFragment = {
+    from_id: function(id){
+	var field = Number(id.charAt(1));
+	var move_number = Number(id.charAt(2));
+	return this.new(field,move_number);
+    },
     new: function(field, move_number){
 	var obj = {
 	    field: field,
