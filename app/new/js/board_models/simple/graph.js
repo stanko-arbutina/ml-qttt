@@ -1,44 +1,27 @@
+//clone, removeNode
 QTTT.BoardModels.Simple.Graph = {
     new: function(){
 	var obj = {
 	    _init: function(){
-		this._started = false;
 		this._nodes = {};
-		this._nodes_for_fields = [];
-		this._component_count = -1;
+		this._counter = QTTT.Util.Counter.new();
 	    },
-	    rezolution: function(fragment){
-		if (this.first_rezolution.indexOf(fragment.id)>-1)
-		    return this.first_rezolution;
-		return this.second_rezolution;
+	    addNode: function(node){
+		this._nodes[node.id] = node;
+		return node;
 	    },
-	    add: function(fragment){
-		var node = this._get_node_for_field(fragment.field);
-		this._nodes[fragment.id] = node;
-		if (this._started){
-		    this._started.connect(fragment.move_number, node);
-		    if (this._started.cyclic){
-			this.first_rezolution = node.generate_fragments(fragment.move_number, '-');
-			this.second_rezolution = this._started.generate_fragments(fragment.move_number, '*');
-			this._started = false;
-			return true;
-		    }
-		    this._started = false;
-		} else {
-		    this._started = node;
-		}
-		return false;
+	    removeNode: function(node){
+		node.disconnect();
+		delete this._nodes[node.id];
 	    },
-	    _get_node_for_field: function(field){
-		if (!this._nodes_for_fields[field]){
-		    var new_node = QTTT.BoardModels.Simple.Node.new(field, this._get_new_component());
-		    this._nodes_for_fields[field] = new_node;
-		}    
-		return this._nodes_for_fields[field];
+	    getNode: function(id){
+		return this._nodes[id];
 	    },
-	    _get_new_component: function(){
-		this._component_count+=1;
-		return this._component_count;
+	    visitSubgraph: function(node, direction_edge_id, f){
+		var mark = this._counter.get();
+		node.marker = mark;
+		f(node, direction_edge_id);
+		node.visitNbsOnce(mark, f);
 	    }
 	};
 	obj._init();

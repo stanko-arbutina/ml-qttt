@@ -1,0 +1,10 @@
+QTTT.Util.Counter = {
+    new: function(id,cid){
+	var obj = {
+	    _init: function(){
+	    }
+    };
+    obj._init();
+    return obj;
+    }
+};

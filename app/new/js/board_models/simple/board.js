@@ -1,3 +1,23 @@
+/*
+neki adapter koji samo AI koristi
+  playMove, unPlayMove, availableStates (iterator, prima funkciju kojoj predaje move i state?
+
+*/
+
+
+/*
+
+  za svaki potez može reći je li legalan, može vratiti listu legalnih poteza,
+  te može igrati neki potez
+
+  ima svoj state: {expect_small, expect_big, cycle, finished}
+  legalmoves koji vrati nakon svake akcije
+  akcije su addBig,addSmall,resolve,
+  također ima i clone
+  
+
+		this._graph = QTTT.BoardModels.Graph.new();
+*/
 QTTT.BoardModels.Simple.Board = {
     new: function(){
 	var obj = {	    

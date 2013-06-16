@@ -1,0 +1,54 @@
+QTTT.BoardModels.Simple.BoardGraph = {
+    new: function(){
+	var obj = {
+	    pushFragment: function(fragment){
+		this._prev_node = this._current_node;
+		this._current_node = this._get_node_for_field(fragment.field);
+		if (this._started){
+		    var cycle = (this._prev_node.cid == this._current_node.cid);
+		    this._prev_node.connect(fragment.move_number, node);
+		    this._started = false;
+		} else {
+		    this._started = true;
+		}
+		if (cycle){
+		    //game status?
+		    return [
+			this._generate_fragments(this._prev_node, fragment.move_number),
+			this._generate_fragments(this._current_node, fragment.move_number)
+		    ];
+		}
+	    },
+	    //removeFragment i clone fale;
+	    inCycle: function(){
+		return ((!this._started) && (this._current_node.cid == this._prev_node.cid));
+	    },
+	    getResolutions: function(){
+	    },
+	    init: function(){
+		this._component_count = -1;
+		this._prev_node = undefined;
+		this._current_node = undefined;
+		this._graph = QTTT.BoardModels.Graph.new();
+	    },
+	    _generate_fragments: function(node, move_number){
+		var arr = [];
+		this._graph.visitSubgraph(node, move_number,function(node,edge){
+		    arr.push(QTTT.Util.MoveFragment.new(node.id, edge.id));
+		});
+		return arr;
+	    },
+
+	    _get_node_for_field: function(field){
+		var node = this._graph.getNode(field)
+		QTTT.BoardModels.Simple.Node.new(field, this._get_new_component()));
+	    },
+	    _get_new_component: function(){
+		this._component_count+=1;
+		return this._component_count;
+	    }
+	};
+	obj._init();
+	return obj;
+    }
+};
