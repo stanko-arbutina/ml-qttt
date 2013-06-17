@@ -2,7 +2,7 @@ QTTT.Util.Counter = {
     new: function(){
 	var obj = {
 	    _init: function(){
-		this.count == -1;
+		this.count = -1;
 	    },
 	    get: function(){
 		this.count+=1;

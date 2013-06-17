@@ -17,10 +17,10 @@ QTTT.BoardModels.Simple.Graph = {
 	    getNode: function(id){
 		return this._nodes[id];
 	    },
-	    visitSubgraph: function(node, direction_edge_id, f){
+	    visitSubgraph: function(node, direction_edge, f){
 		var mark = this._counter.get();
 		node.marker = mark;
-		f(node, direction_edge_id);
+		f(node, direction_edge);
 		node.visitNbsOnce(mark, f);
 	    }
 	};

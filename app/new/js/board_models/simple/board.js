@@ -24,21 +24,40 @@ QTTT.BoardModels.Simple.Board = {
 	    },
 	    addSmall: function(fragment){
 		this._graph.pushFragment(fragment);
-		if (this._graph.inCycle()){ 
-		    this._resolutions = this._graph.getResolutions();
-		    return this.state.cycle(this._resolutions);
+		if (this.state.get().waitSecondSmall){
+		    if (this._graph.inCycle()){ 
+			this._resolutions = this._graph.getResolutions();
+			return this.state.cycle(this._resolutions);
+		    } else return this.state.waitFirstSmall();
 		};
-		return this.state.waitSmall();
+		return this.state.waitSecondSmall();
 	    },
 	    resolve: function(fragment){
+		var that = this;
 		var res_num = (this._resolutions[0].contains(fragment)) ? 0 : 1;
 		var resolution = this._resolutions[res_num];
 		this._graph.resolve(resolution);
-		$.each(resolution, function(i, fragment){ this._classic.push(fragment.field); });
+		resolution.each(function(i, fragment){ that._classic.push(fragment); });
 		var score  = this._classic.score();
-		if (this._classic.finished) return this.state.finished(score);
+		if (this._classic.finished || this._classic.free_fields().length == 0) return this.state.finished(score);
 		if (this._classic.free_fields().length == 1) return this.state.waitBig();
-		return this.state.waitSmall();		
+		return this.state.waitFirstSmall();		
+	    },
+	    legalBig: function(fragment){
+		return (this.state.get().waitBig && (this._classic.free_fields()[0] == fragment.field));
+	    },
+	    legalSmall: function(fragment){
+		var free = this._classic.free_fields();
+		if (free.length <2 ) return false;
+		if (free.indexOf(fragment.field)==-1) return false;
+		if (this.state.get().waitSecondSmall)
+		    if (this._graph.currentFragment().field==fragment.field)
+			return false;
+		return (this.state.get().waitFirstSmall || this.state.get().waitSecondSmall);
+	    },
+	    legalResolve: function(fragment){
+		return this.state.get().cycle && 
+		    (this._resolutions[0].contains(fragment) || this._resolutions[1].contains(fragment));
 	    }
 	};
 	obj.init();

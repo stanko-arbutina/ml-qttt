@@ -14,14 +14,14 @@ QTTT.BoardModels.Simple.Classic = {
 	    },
 	    win_lines: [
 		[0,1,2],[3,4,5],[6,7,8],
-		[0,3,6],[1,4,7],[2,5,7],
+		[0,3,6],[1,4,7],[2,5,8],
 		[0,4,8],[2,4,6]
 	    ],
 	    finished: false,
 	    free_fields: function(){
 		var that = this;
 		var free_fields = [];
-		$.each(that.quick,function(index,el){ if (el == 0) free_fields.push(index)});
+		$.each(that.quick, function(index,el){ if (el == 0) free_fields.push(index)});
 		return free_fields;
 	    },
 	    score: function(){
@@ -34,7 +34,7 @@ QTTT.BoardModels.Simple.Classic = {
 		    $.each(line, function(index,el){ 
 			if (that.quick[el]==0){
 			    test.push(-index-1);
-			} else test.push(that.quick[el] % 2)
+			} else test.push(that.quick[el] % 2);
 		    });
 		    if ((test[0] == test[1]) && (test[1] == test[2])){
 			var move = Math.min(that.quick[line[0]], that.quick[line[1]], that.quick[line[2]]);

@@ -1,3 +1,15 @@
-MoveFragment klasa
-	     - ima field, move_number
-	     - vraća move_type, id
+(možda će trebati state malo preraditi da bude intuitivniji,ali ako je problem, samo je u 
+simple.board, util.game_state i game_board - vidjeti nakon računalnog igrača)
+
+Front end:
+      klik event handleri na markovima samo kad su aktivirani - tako da možemo kliknuti bilo gdje na legalan field
+      označiti nekako (crtice npr.) kad povežemo dva elementa
+      - gradient neki u pozadini možda, background?
+      odmah pri nastanku ciklusa mora biti vidljivo koje su varijante, koji su common, a koji nisu
+      lagano se miču oko mjesta svi koji nisu sređeni
+      animacija, za bigChar (dodavanje), kao i na mouseover (neka bolja - npr. taj i svi iz varijante se umire i povećaju, ostali se malo smanje).
+	view eventove stopati jer ih ne propagiram nikada
+Ostalo:
+	classic pimpati, tako da mogu raditi s integerima i napraviti reprezentaciju pomoću skupa
+	najbolje će biti skup particionirati po komponentama povezanosti
+

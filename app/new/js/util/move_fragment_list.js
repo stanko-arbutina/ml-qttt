@@ -14,7 +14,11 @@ QTTT.Util.MoveFragmentList = {
 	    contains: function(fragment){
 		if (this._hash[fragment.id]) return true;
 		return false;
+	    },
+	    each: function(f){
+		$.each(this._fragments, f);
 	    }
+
 	};
 	obj.init();
 	return obj;

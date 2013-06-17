@@ -22,7 +22,8 @@ QTTT.Players.Human = {
 		this._name = name;
 		this._mouse = QTTT.ViewControl.MouseControl.new(this);
 	    },
-	    add: function(param){//interface prema mišu
+	    add: function(param){//interface prema mišu	
+		this._mouse.on();
 		var that = this;
 		if (this._my_turn) eve('player.add',{},{id: that.id, field: param});
 	    },

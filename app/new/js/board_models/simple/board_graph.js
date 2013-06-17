@@ -3,20 +3,22 @@ QTTT.BoardModels.Simple.BoardGraph = {
 	var obj = {
 	    _graph: graph,
 	    pushFragment: function(fragment){
-		if (!this._started && this._prev_node){
+		this._fragment = fragment;
+		this._prev_node = this._current_node;
+		this._current_node = this._get_node_for_field(fragment.field);		
+		if (this._started && (this._prev_node.cid == this._current_node.cid)) this._in_cycle = true;
+		    else this._in_cycle = false;
+		if (this._started){
 		    this._prev_node.connect(this._fragment.move_number, this._current_node);
 		}
 		this._started = !this._started;
-		this._fragment = fragment;
-		this._prev_node = this._current_node;
-		this._current_node = this._get_node_for_field(fragment.field);
 	    },
 	    //clone fali;
 	    inCycle: function(){
-		return ((!this._started) && (this._current_node.cid == this._prev_node.cid));
+		return this._in_cycle;
 	    },
 	    currentFragment: function(){
-		return this._fragment();
+		return this._fragment;
 	    },
 	    getResolutions: function(){
 		return [
@@ -26,8 +28,8 @@ QTTT.BoardModels.Simple.BoardGraph = {
 	    },
 	    resolve: function(resolution){
 		var graph = this._graph;
-		$.each(resolution, function(index, move_fragment){
-		    graph.removeNode(move_fragment.field);
+		resolution.each(function(index, move_fragment){
+		    graph.removeNode(graph.getNode(move_fragment.field));
 		});
 		this._init();
 	    },
@@ -37,17 +39,18 @@ QTTT.BoardModels.Simple.BoardGraph = {
 		this._fragment = undefined;
 		this._started = false;
 		this._counter = QTTT.Util.Counter.new();
+		this._in_cycle = false;
 	    },
 	    _generate_fragments: function(node, move_number){
 		var fragments = QTTT.Util.MoveFragmentList.new();
-		this._graph.visitSubgraph(node, move_number,function(node,edge){
+		this._graph.visitSubgraph(node, {id: move_number}, function(node,edge){
 		    fragments.push(QTTT.Util.MoveFragment.new(node.id, edge.id));
 		});
 		return fragments;
 	    },
 	    _get_node_for_field: function(field){
-		var node = this._graph.getNode(field)
-		if (!node) node =QTTT.BoardModels.Simple.Node.new(field, this._counter.get());
+		var node = this._graph.getNode(field);
+		if (!node) node = this._graph.addNode(QTTT.BoardModels.Simple.Node.new(field, this._counter.get()));
 		return node;
 	    }
 	};

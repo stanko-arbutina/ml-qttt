@@ -20,9 +20,6 @@ QTTT.ViewControl.BoardControl = {
 	    init: function(){
 		this.board = this._get_board();
 		var that = this;
-		eve.on('board.add', function(el){
-		    that.board.add(el);
-		});
 		eve.on('board.addBig', function(el){
 		    that.board.addBig([el]);
 		});
@@ -33,11 +30,17 @@ QTTT.ViewControl.BoardControl = {
 		    that._all_els(function(coll){ that.board.unglow(coll)}, param);
 		});
 		eve.on('board.cycle', function(arg){
-		    that._cycle(arg.first, arg.second);
+		    that._cycle(arg);
 		});
-		eve.on('board.uncycle', function(arg){
+		eve.on('board.addSmall', function(el){
+		    that.board.add(el);
+		});
+
+		eve.on('board.resolve', function(fragment){
+		    var arr1  = [];
 		    var arr = [];
-		    $.each(arg, function(index, mark_id){arr.push(QTTT.Util.MoveFragment.from_id(mark_id));});
+		    that._all_els(function(sub_arr){ arr1  = arr1.concat(sub_arr)},fragment.id);
+		    $.each(arr1, function(index, mark_id){arr.push(QTTT.Util.MoveFragment.from_id(mark_id));});
 		    that.board.addBig(arr);
 		});
 	    },
@@ -61,18 +64,17 @@ QTTT.ViewControl.BoardControl = {
 		} else f(that._second_variant);
 
 	    },
-	    _cycle: function(first, second){//dobiva dva polja markova i aktivira različite
+	    _cycle: function(arg){ //polje od dva MoveFragmentLista
 		var that = this;
 		this._common_elements = [];
 		this._first_variant = [];
 		this._second_variant = [];
-		$.each(first, function(ind,el){
-		    if (second.indexOf(el)>-1)
-			that._common_elements.push(el);
-		    else {
-			that._first_variant.push(el);
-			that._second_variant.push(second[ind]);
-		    }
+		arg[0].each(function(ind,el){
+		    if (arg[1].contains(el)) that._common_elements.push(el.id);
+		    else that._first_variant.push(el.id);
+		});
+		arg[1].each(function(ind,el){
+		    if (!arg[0].contains(el)) that._second_variant.push(el.id);
 		});
 		$.each(that._first_variant, function(ind, el){ that.board.activate_mark(el)});
 		$.each(that._second_variant, function(ind, el){ that.board.activate_mark(el)});

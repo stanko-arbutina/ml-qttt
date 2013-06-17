@@ -26,7 +26,7 @@ QTTT.ViewControl.MouseControl = {
 	    init: function(){
 		var that = this;
 		eve.on('board.cycle', function(){ that.in_cycle();});
-		eve.on('board.uncycle', function(){ that.outside_cycle();});
+		eve.on('board.resolve', function(){ that.outside_cycle();});
 		eve.on('view.*', function(param){
 		    if (that._active){
 			eve.stop();
