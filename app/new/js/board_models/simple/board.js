@@ -1,66 +1,44 @@
 /*
-neki adapter koji samo AI koristi
-  playMove, unPlayMove, availableStates (iterator, prima funkciju kojoj predaje move i state?
-
-*/
-
-
-/*
-
   za svaki potez može reći je li legalan, može vratiti listu legalnih poteza,
   te može igrati neki potez
-
   ima svoj state: {expect_small, expect_big, cycle, finished}
   legalmoves koji vrati nakon svake akcije
   akcije su addBig,addSmall,resolve,
   također ima i clone
-  
-
-		this._graph = QTTT.BoardModels.Graph.new();
 */
+
+
+
 QTTT.BoardModels.Simple.Board = {
     new: function(){
 	var obj = {	    
-	    finished: function(){
-		return (this._classic.finished || this.full_board);
-	    },
-	    score: function(){
-		return this._classic.score();
-	    },
 	    init: function(){
 		this._classic = QTTT.BoardModels.Simple.Classic.new();
-		this._graph = QTTT.BoardModels.Simple.Graph.new();
+		this._graph = QTTT.BoardModels.Simple.BoardGraph.new(QTTT.BoardModels.Simple.Graph.new());
+		this._resolutions = undefined;
+		this.state = QTTT.Util.BoardState.new();
 	    },
-	    legalmove: function(move_fragment){
-		return true;
-		return (this._classic.is_free(move_fragment)) && 
-		    (!this._graph._started.field == move_fragment.field);
+	    addBig: function(fragment){
+		this._classic.push(fragment);
+		return this.state.finished(this._classic.score());
 	    },
-	    resolve: function(move_fragment){
-		var that = this;
-		var rez = this._graph.rezolution(move_fragment);
-		$.each(rez, function(ind,el){ that._classic.push(el)});
-		eve('board.uncycle', {}, rez);
+	    addSmall: function(fragment){
+		this._graph.pushFragment(fragment);
+		if (this._graph.inCycle()){ 
+		    this._resolutions = this._graph.getResolutions();
+		    return this.state.cycle(this._resolutions);
+		};
+		return this.state.waitSmall();
 	    },
-	    add: function(move_fragment){
-		var free = this._classic.free_fields();
-		if (free.length ==1){
-		    this._classic.push(move_fragment);
-		    eve('board.addBig',{},move_fragment);
-		    this.full_board = true;
-		} else {
-		    var cyclic = this._graph.add(move_fragment);
-		    eve('board.add',{},move_fragment);		   
-		    if (cyclic) {
-			var that = this;
-			eve('board.cycle',{},{
-			    first: that._graph.first_rezolution, 
-			    second: that._graph.second_rezolution
-			});
-		    }
-		}
-
-	       
+	    resolve: function(fragment){
+		var res_num = (this._resolutions[0].contains(fragment)) ? 0 : 1;
+		var resolution = this._resolutions[res_num];
+		this._graph.resolve(resolution);
+		$.each(resolution, function(i, fragment){ this._classic.push(fragment.field); });
+		var score  = this._classic.score();
+		if (this._classic.finished) return this.state.finished(score);
+		if (this._classic.free_fields().length == 1) return this.state.waitBig();
+		return this.state.waitSmall();		
 	    }
 	};
 	obj.init();

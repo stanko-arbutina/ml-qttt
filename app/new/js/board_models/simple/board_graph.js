@@ -15,6 +15,9 @@ QTTT.BoardModels.Simple.BoardGraph = {
 	    inCycle: function(){
 		return ((!this._started) && (this._current_node.cid == this._prev_node.cid));
 	    },
+	    currentFragment: function(){
+		return this._fragment();
+	    },
 	    getResolutions: function(){
 		return [
 		    this._generate_fragments(this._prev_node, this._fragment.move_number),
@@ -36,11 +39,11 @@ QTTT.BoardModels.Simple.BoardGraph = {
 		this._counter = QTTT.Util.Counter.new();
 	    },
 	    _generate_fragments: function(node, move_number){
-		var arr = [];
+		var fragments = QTTT.Util.MoveFragmentList.new();
 		this._graph.visitSubgraph(node, move_number,function(node,edge){
-		    arr.push(QTTT.Util.MoveFragment.new(node.id, edge.id));
+		    fragments.push(QTTT.Util.MoveFragment.new(node.id, edge.id));
 		});
-		return arr;
+		return fragments;
 	    },
 	    _get_node_for_field: function(field){
 		var node = this._graph.getNode(field)

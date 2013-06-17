@@ -1,4 +1,3 @@
-QTTT.Util = {};
 QTTT.Util.MoveFragment = {
     from_id: function(id){
 	var field = Number(id.charAt(1));

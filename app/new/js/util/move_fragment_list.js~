@@ -1,0 +1,18 @@
+QTTT.Util.MoveFragmentList = {
+    new: function(){
+	var obj = {
+	    init: function(){
+		this._fragments = [];
+		this._id_list = [];
+		this._hash = {};
+	    },
+	    push: function(fragment){
+		this._fragments.push(fragment);
+		this._id_list.push(fragment.id);
+		this._hash[fragment.id] = fragment;
+	    }
+	};
+	obj.init();
+	return obj;
+    }
+};
