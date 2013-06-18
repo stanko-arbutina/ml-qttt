@@ -2,6 +2,10 @@
 QTTT.BoardModels.Simple.Node = {
     new: function(id,cid){
 	var obj = {
+	    clone: function(){
+		var new_obj = QTTT.BoardModels.Simple.Node.new(this.id, this.cid);
+		return new_obj;
+	    },
 	    cid: cid,
 	    connect: function(edge_id,other){
 		var edge = QTTT.BoardModels.Simple.Edge.new(edge_id, this, other);

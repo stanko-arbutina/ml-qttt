@@ -12,6 +12,14 @@
 QTTT.BoardModels.Simple.Board = {
     new: function(){
 	var obj = {
+	    clone: function(){
+		var new_obj = QTTT.BoardModels.Simple.Board.new();
+		new_obj._resolutions = this._resolutions;
+		new_obj._classic = this._classic.clone();
+		new_obj._graph = this.graph.clone();
+		new_obj._stet = this.state.clone();
+		return new_obj;
+	    },
 	    reset: function(){
 		this._resolutions = undefined;
 		if (!this.state) this.state = QTTT.Util.BoardState.new();

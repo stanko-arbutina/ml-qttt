@@ -1,6 +1,11 @@
 QTTT.Util.BoardState = {
     new: function(){
 	var obj = {
+	    clone: function(){
+		var new_obj = QTTT.Util.BoardState.new();
+		new_obj._out = this._out;
+		return new_obj;
+	    },
 	    init: function(){
 		this.waitFirstSmall();
 	    },

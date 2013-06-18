@@ -1,6 +1,13 @@
 QTTT.BoardModels.Simple.Classic = {
     new: function(){
 	var obj = {
+	    clone: function(){
+		var new_obj  = QTTT.BoardModels.Simple.Classic.new();
+		new_obj.quick = this.quick.slice(0);
+		new_obj.fragments = this.fragments.slice(0);
+		new_obj.finished = this.finished;
+		return new_obj;
+	    },
 	    init: function(){
 		this.quick = [0,0,0,0,0,0,0,0,0];
 		this.fragments = [];
