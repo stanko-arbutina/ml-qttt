@@ -49,22 +49,32 @@
 	<script type="text/javascript" src="js/game_board.js"></script>
 	<script type="text/javascript" src="js/game_referee.js"></script>
 
+	<script type="text/javascript" src="js/app.js"></script>
+
 	<style type="text/css">  
+	    body {
+	        background-color: #111;
+
+	    }
 	    #raphael_container {
                 position: fixed;
                 width: 70%;
                 height: 100%;
-                top: 0px;
                 left: 0px;
-	        background-color: #ccc;
+	        background-image:url('back.jpg');	        
 	    }  
+	    #game_setup {
+	      margin: 5px;
+	    }
+	    #start_user_game {
+	      width: 100%;
+	    }
 	    #status_container {
                 position: fixed;
                 width: 30%;
                 height: 100%;
                 top: 0px;
                 right: 0px;
-	        background-color: #111;
 	        color: #0A0;
 	        overflow: auto;
 	    }  
@@ -74,6 +84,9 @@
     <body>  
 	<div id="raphael_container"></div>  
 	<div id="status_container">
+	  <div id = 'game_setup'>
+	    <button id = 'start_user_game'>Počni igru</button>
+	  </div>
 	  <ul id="status">
 	  </ul>
 	</div>  

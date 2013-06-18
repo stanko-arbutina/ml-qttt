@@ -3,8 +3,12 @@
 QTTT.GameBoard = {
     new: function(){
 	var obj = {
+	    reset: function(){
+		if (!this.board) this.board = QTTT.BoardModels.Simple.Board.new();
+		else this.board.reset();
+	    },
 	    init: function(){
-		this.board = QTTT.BoardModels.Simple.Board.new();
+		this.reset();
 	    },
 	    playFragment: function(type, fragment){
 		if (type == 'add') {

@@ -4,6 +4,7 @@ QTTT.BoardModels.Simple.Classic = {
 	    init: function(){
 		this.quick = [0,0,0,0,0,0,0,0,0];
 		this.fragments = [];
+		this.finished  = false;
 	    },
 	    push: function(fragment){
 		this.quick[fragment.field] = fragment.move_number;
@@ -17,7 +18,6 @@ QTTT.BoardModels.Simple.Classic = {
 		[0,3,6],[1,4,7],[2,5,8],
 		[0,4,8],[2,4,6]
 	    ],
-	    finished: false,
 	    free_fields: function(){
 		var that = this;
 		var free_fields = [];
@@ -26,8 +26,8 @@ QTTT.BoardModels.Simple.Classic = {
 	    },
 	    score: function(){
 		var score = 0;
-		x = -1;
-		o = -1;
+		var x = -1;
+		var o = -1;
 		var that = this;
 		$.each(that.win_lines, function(index, line){
 		    var test = [];

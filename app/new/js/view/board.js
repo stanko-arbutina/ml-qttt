@@ -35,10 +35,14 @@ QTTT.View.Board = {
 	    _y: y,
 	    _size: size,
 	    //public
+	    reset: function(){
+		if (!this._fields) this._fields = [];
+		else for (var i=0; i<9; i++) this._fields[i].reset();
+		this._marks = {};
+	    },
 	    init: function(){
 		this._drawGrid();
-		this._fields = [];
-		this._marks = {};
+		this.reset();
 		for (var i=0; i<9;i++) this._fields.push(
 		    QTTT.View.Field.new({
 			paper: this._p,

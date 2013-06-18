@@ -25,15 +25,22 @@ QTTT.View.Field =  {
 	    click(function(){
 		eve("view.field.click", {},id);
 	    });
-	return {
-	    num_marks: 0,
-	    marks: [],
+	var obj = {
 	    _p: p,
 	    _x: x,
 	    _y: y,
 	    _rect: rect,
 	    _mark_size: total_size/3,
 	    //interface
+	    reset: function(){
+		if (this.marks) this._remove_small_marks();
+		else this.marks = [];
+		if (this.mark) {
+		    this.mark.remove();
+		    this.mark = undefined;
+		}
+		this.num_marks = 0;
+	    },
 	    add: function(mark_type,id){
 		this.marks.push(QTTT.View.Mark.new({
 		    paper: this._p,
@@ -74,5 +81,7 @@ QTTT.View.Field =  {
 		return removed_ids;
 	    }
 	};
+	obj.reset();
+	return obj;
     }// end Field.new
 };//end Field

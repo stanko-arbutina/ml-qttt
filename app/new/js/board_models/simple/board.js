@@ -11,12 +11,20 @@
 
 QTTT.BoardModels.Simple.Board = {
     new: function(){
-	var obj = {	    
-	    init: function(){
-		this._classic = QTTT.BoardModels.Simple.Classic.new();
-		this._graph = QTTT.BoardModels.Simple.BoardGraph.new(QTTT.BoardModels.Simple.Graph.new());
+	var obj = {
+	    reset: function(){
 		this._resolutions = undefined;
-		this.state = QTTT.Util.BoardState.new();
+		if (!this.state) this.state = QTTT.Util.BoardState.new();
+		else this.state.init(); //isto kao i reset
+
+		if (!this._classic) this._classic = QTTT.BoardModels.Simple.Classic.new();
+		else this._classic.init();
+
+		if (this._graph) this._graph.reset();  
+		else this._graph = QTTT.BoardModels.Simple.BoardGraph.new();
+	    },
+	    init: function(){
+		this.reset();
 	    },
 	    addBig: function(fragment){
 		this._classic.push(fragment);

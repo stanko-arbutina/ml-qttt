@@ -17,8 +17,12 @@ QTTT.ViewControl.BoardControl = {
     new:  function(el_id){
 	var obj = {
 	    $el: $(el_id),
+	    reset: function(){
+		if (this.board) this.board.reset();
+		else this.board = this._get_board();
+	    },
 	    init: function(){
-		this.board = this._get_board();
+		this.reset();
 		var that = this;
 		eve.on('board.addBig', function(el){
 		    that.board.addBig([el]);
@@ -69,6 +73,7 @@ QTTT.ViewControl.BoardControl = {
 		this._common_elements = [];
 		this._first_variant = [];
 		this._second_variant = [];
+
 		arg[0].each(function(ind,el){
 		    if (arg[1].contains(el)) that._common_elements.push(el.id);
 		    else that._first_variant.push(el.id);

@@ -16,14 +16,17 @@
 QTTT.ViewControl.MouseControl = {
     new: function(player){
 	var obj = {
-	    _active: false,
-	    _in_cycle: false,
 	    _player: player,
 	    on: function(){ this._active = true;},
 	    off: function(){ this._active = false;},
 	    in_cycle: function(){ this._in_cycle = true;},
 	    outside_cycle: function(){ this._in_cycle = false;},
+	    reset: function(){
+		this.off();
+		this.outside_cycle();
+	    },
 	    init: function(){
+		this.reset();
 		var that = this;
 		eve.on('board.cycle', function(){ that.in_cycle();});
 		eve.on('board.resolve', function(){ that.outside_cycle();});
@@ -33,7 +36,6 @@ QTTT.ViewControl.MouseControl = {
 			var parts = eve.nt().split('.');
 			var type = parts[1];
 			if ((type == 'field') && (!that._in_cycle)){
-			    //još treba ispitati je li to legalan potez negdje, i što s njim (big ili small)
 			    that._player.add(param);
 			}
 			if ((type == 'mark') && (that._in_cycle)){

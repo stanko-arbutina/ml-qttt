@@ -14,8 +14,12 @@
 QTTT.ViewControl.Status = {
     new: function(cont){
 	obj = {
+	    reset: function(){
+		if (!this._output) this._output = QTTT.View.Status.new(cont);
+		else this._output.reset();
+	    },
 	    init: function(){
-		this._output = QTTT.View.Status.new(cont);
+		this.reset();
 		var out = this._output;
 		eve.on('gameref.playermove',function(name){
 		    out.print(name+' je na potezu.');

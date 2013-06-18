@@ -2,6 +2,10 @@
 QTTT.BoardModels.Simple.Graph = {
     new: function(){
 	var obj = {
+	    reset: function(){
+		this._nodes = {};
+		this._counter.init();
+	    },
 	    _init: function(){
 		this._nodes = {};
 		this._counter = QTTT.Util.Counter.new();

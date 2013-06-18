@@ -3,15 +3,19 @@ QTTT.GameReferee = {
 	var obj= {
 	    x_player: opts.x_player,
 	    o_player: opts.o_player,
-	    move_number: 0,
-	    _num_moves: 0,
-	    init: function(){
+	    board: opts.board,
+	    reset: function(){
+		this.move_number = 0;
+		this.current_move = undefined;
 		this.move_list = [];
-		this.board = QTTT.GameBoard.new(); //možda ga slati preko opcija?
+		this.playMove();
+
+	    },
+	    init: function(){
 		this._on_player_move(this.processMove);
 		this._on_next_player(this.playMove);
 		this._on_finish_game(this.finishGame);
-		this.playMove();
+		this.reset();
 	    },
 	    currentPlayer: function(){
 		return this._odd_move(this.x_player,this.o_player);
@@ -26,7 +30,7 @@ QTTT.GameReferee = {
 		this.move_number+=1;
 		this._player_status();
 		this.currentPlayer().play();
-	    }, //todo i game finished
+	    },
 	    finishGame: function(){
 		this.x_player.dont_play();
 		this.o_player.dont_play();
@@ -75,13 +79,3 @@ QTTT.GameReferee = {
 	return obj;
     }
 };
-$(function(){
-    boardview = QTTT.ViewControl.BoardControl.new('#raphael_container');
-    status = QTTT.ViewControl.Status.new($('#status'));
-    player1 = QTTT.Players.Human.new('Stanko',11);
-    player2 = QTTT.Players.Human.new('Stankov protivnik',12);
-    game_ref = QTTT.GameReferee.new({
-	x_player: player1,
-	o_player: player2
-    });
-});

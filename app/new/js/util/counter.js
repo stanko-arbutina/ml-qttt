@@ -1,7 +1,7 @@
 QTTT.Util.Counter = {
     new: function(){
 	var obj = {
-	    _init: function(){
+	    init: function(){
 		this.count = -1;
 	    },
 	    get: function(){
@@ -9,7 +9,7 @@ QTTT.Util.Counter = {
 		return this.count;
 	    }
 	};
-	obj._init();
+	obj.init();
 	return obj;
     }
 };

@@ -1,0 +1,16 @@
+$(function(){
+    $('#start_user_game').click(function(){
+	delete QTTT['player1'];
+	delete QTTT['player2'];
+	delete QTTT['game'];
+	/* ! problem je što se prošla igra ne miče s ekrana, napraviti reset na svemu */
+	QTTT.boardview = QTTT.ViewControl.BoardControl.new('#raphael_container');
+	QTTT.status = QTTT.ViewControl.Status.new($('#status'));
+	QTTT.player1 = QTTT.Players.Human.new('Stanko',11);
+	QTTT.player2 = QTTT.Players.Human.new('Stankov protivnik',12);
+	QTTT.game = QTTT.GameReferee.new({
+	    x_player: QTTT.player1,
+	    o_player: QTTT.player2
+	});
+    });
+});
