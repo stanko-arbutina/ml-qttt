@@ -1,1 +1,0 @@
-stanko@stanko-desktop.2525:1371537088
