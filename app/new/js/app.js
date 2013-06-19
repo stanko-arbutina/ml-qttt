@@ -1,8 +1,8 @@
 $(function(){
     $('#start_user_game').click(function(){
 
-	var player1 = QTTT.Players.Human.new('Stanko',11);
-	var player2 = QTTT.Players.Human.new('Stankov protivnik',12);
+	var player1 = QTTT.Players.Computer.new('Stanko',11);
+	var player2 = QTTT.Players.Computer.new('Stankov protivnik',12);
 
 	if (QTTT.view) QTTT.view.reset(); 
 	else QTTT.view = QTTT.ViewControl.BoardControl.new('#raphael_container');
@@ -20,6 +20,5 @@ $(function(){
 	} else {
 	    QTTT.game.reset();
 	}
-	
     });
 });

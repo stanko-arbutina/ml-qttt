@@ -1,6 +1,11 @@
 QTTT.Util.MoveFragmentList = {
     new: function(){
 	var obj = {
+	    clone: function(){
+		var new_obj = QTTT.Util.MoveFragmentList.new();
+		this.each(function(index, frag){new_obj.push(frag)});
+		return new_obj;
+	    },
 	    init: function(){
 		this._fragments = [];
 		this._id_list = [];
@@ -17,8 +22,10 @@ QTTT.Util.MoveFragmentList = {
 	    },
 	    each: function(f){
 		$.each(this._fragments, f);
+	    },
+	    first: function(){
+		return this._fragments[0];
 	    }
-
 	};
 	obj.init();
 	return obj;

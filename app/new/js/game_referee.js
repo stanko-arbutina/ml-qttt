@@ -29,7 +29,7 @@ QTTT.GameReferee = {
 		this.currentPlayer().dont_play();
 		this.move_number+=1;
 		this._player_status();
-		this.currentPlayer().play();
+		this.currentPlayer().play(this.board.board, this.move_number);
 	    },
 	    finishGame: function(){
 		this.x_player.dont_play();
@@ -37,6 +37,7 @@ QTTT.GameReferee = {
 		//poslati skor na server, resetirati sve elemente (vidjeti što treba, radi se o puno igara)
 	    },
 	    processMove: function(type, move_fragment){		
+		//console.log(type, move_fragment);
 	        if (this.board.playFragment(type, move_fragment))
 		    this.current_move.push(move_fragment);
 	    },

@@ -1,9 +1,14 @@
 QTTT.Util.Move = {
     new: function(type){
 	var obj = {
-	    type: type,
-	    init: function(){
+	    clone: function(){
+		var new_obj = QTTT.Util.Move.new(this.type);
+		new_obj.fragments = this.fragments.slice(0);
+		return new_obj;
+	    },
+	    init: function(type){
 		this.fragments = [];
+		this.type = type;
 	    },
 	    push: function(move_fragment){
 		this.fragments.push(move_fragment);
@@ -17,7 +22,7 @@ QTTT.Util.Move = {
 		    return (this.fragments.length == 3);
 	    }
 	};
-	obj.init();
+	obj.init(type);
 	return obj;
     }
 };

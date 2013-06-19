@@ -4,6 +4,12 @@ QTTT.Util.BoardState = {
 	    clone: function(){
 		var new_obj = QTTT.Util.BoardState.new();
 		new_obj._out = this._out;
+		if (this._out.resolutions){
+		    new_obj._out.resolutions = [
+			this._out.resolutions[0].clone(),
+			this._out.resolutions[1].clone()
+		    ]
+		}
 		return new_obj;
 	    },
 	    init: function(){

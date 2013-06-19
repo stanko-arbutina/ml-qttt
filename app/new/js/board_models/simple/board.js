@@ -14,10 +14,11 @@ QTTT.BoardModels.Simple.Board = {
 	var obj = {
 	    clone: function(){
 		var new_obj = QTTT.BoardModels.Simple.Board.new();
-		new_obj._resolutions = this._resolutions;
+		if (this._resolutions)
+		    new_obj._resolutions = [this._resolutions[0].clone(), this._resolutions[1].clone()];
 		new_obj._classic = this._classic.clone();
-		new_obj._graph = this.graph.clone();
-		new_obj._stet = this.state.clone();
+		new_obj._graph = this._graph.clone();
+		new_obj.state = this.state.clone();
 		return new_obj;
 	    },
 	    reset: function(){
@@ -62,6 +63,7 @@ QTTT.BoardModels.Simple.Board = {
 	    legalBig: function(fragment){
 		return (this.state.get().waitBig && (this._classic.free_fields()[0] == fragment.field));
 	    },
+	    freeFields: function(){return this._classic.free_fields()},
 	    legalSmall: function(fragment){
 		var free = this._classic.free_fields();
 		if (free.length <2 ) return false;

@@ -5,8 +5,8 @@ QTTT.BoardModels.Simple.BoardGraph = {
 	    clone: function(){
 		var new_obj = QTTT.BoardModels.Simple.BoardGraph.new();
 		new_obj._graph = this._graph.clone();
-		new_obj._prev_node = new_obj._graph.getNode(this._prev_node.id);
-		new_obj._current_node = new_obj._graph.getNode(this._current_node.id);
+		if (this._prev_node) new_obj._prev_node = new_obj._graph.getNode(this._prev_node.id);
+		if (this._current_node) new_obj._current_node = new_obj._graph.getNode(this._current_node.id);
 		new_obj._fragment = this._fragment;
 		new_obj._in_cycle = this._in_cycle;
 		new_obj._started = this._started;
