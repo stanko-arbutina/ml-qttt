@@ -1,0 +1,6 @@
+development:
+  adapter: postgresql
+  database: smjenski_rad_development
+  username: stanko
+  password: 389389
+  host: localhost

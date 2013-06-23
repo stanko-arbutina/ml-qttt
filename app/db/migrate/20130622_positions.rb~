@@ -1,0 +1,15 @@
+class Positions < ActiveRecord::Migration
+  def up
+    create_table :positions do |t|
+      (0...45).each{|i| t.integer "pos#{i}"}
+      t.integer :total_games
+      t.integer :lost
+      t.integer :won
+    end
+  end
+
+  def down
+    drop_table :positions
+  end
+
+end

@@ -1,0 +1,6 @@
+ - kodirati graf
+ - na kraju igre, struktura podataka 
+
+	- kodirati podatke o igri i slati ih na server
+****
+	- isključiti view/skraćena igra botova

@@ -1,4 +1,0 @@
-QTTT.Game = {
-    new: function(){
-    }
-}

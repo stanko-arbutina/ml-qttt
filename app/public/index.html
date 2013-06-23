@@ -1,0 +1,102 @@
+<html>  
+    <head>  
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+	<title>Kvantni križić kružić</title>  
+	<script type="text/javascript" src="js/lib/jquery-1.9.1.min.js"></script>  
+	<script type="text/javascript" src="js/lib/raphael-min.js"></script>
+
+	<!-- QTT Custom -->
+
+	<script type="text/javascript" src="js/qttt_init.js"></script>
+	<script type="text/javascript" src="js/util/init.js"></script>
+	<script type="text/javascript" src="js/util/counter.js"></script>
+	<script type="text/javascript" src="js/util/move_fragment.js"></script>
+	<script type="text/javascript" src="js/util/move_fragment_list.js"></script>
+	<script type="text/javascript" src="js/util/move.js"></script>
+	<script type="text/javascript" src="js/util/board_state.js"></script>
+
+	<!-- view -->
+	<script type="text/javascript" src="js/view/init.js"></script>
+	<script type="text/javascript" src="js/view/mark.js"></script>
+	<script type="text/javascript" src="js/view/field.js"></script>
+	<script type="text/javascript" src="js/view/board.js"></script>
+	<script type="text/javascript" src="js/view/status.js"></script>            
+        <!-- end view -->
+
+	<!-- view control -->
+	<script type="text/javascript" src="js/view_control/init.js"></script>
+	<script type="text/javascript" src="js/view_control/board_control.js"></script>
+	<script type="text/javascript" src="js/view_control/mouse_control.js"></script>
+	<script type="text/javascript" src="js/view_control/status.js"></script>
+        <!-- end view control -->
+
+	<!-- players -->
+	<script type="text/javascript" src="js/players/init.js"></script>
+	<script type="text/javascript" src="js/players/human.js"></script>
+	<script type="text/javascript" src="js/players/computer.js"></script>
+        <!-- end players -->
+
+	<!-- board models -->
+	<script type="text/javascript" src="js/board_models/init.js"></script>
+	<script type="text/javascript" src="js/board_models/play_tree.js"></script>
+	<script type="text/javascript" src="js/board_models/n_matrix.js"></script>
+
+	<script type="text/javascript" src="js/board_models/simple/init.js"></script>
+	<script type="text/javascript" src="js/board_models/simple/edge.js"></script>
+	<script type="text/javascript" src="js/board_models/simple/node.js"></script>
+	<script type="text/javascript" src="js/board_models/simple/graph.js"></script>
+	<script type="text/javascript" src="js/board_models/simple/board_graph.js"></script>
+	<script type="text/javascript" src="js/board_models/classic.js"></script>
+	<script type="text/javascript" src="js/board_models/simple/board.js"></script>
+
+        <!-- end board models -->
+
+	<script type="text/javascript" src="js/game_board.js"></script>
+	<script type="text/javascript" src="js/game_referee.js"></script>
+
+	<script type="text/javascript" src="js/app.js"></script>
+
+	<style type="text/css">  
+	    body {
+	        background-color: #111;
+
+	    }
+	    #raphael_container {
+                position: fixed;
+                width: 70%;
+                height: 100%;
+                left: 0px;
+	        background-image:url('back.jpg');	        
+	    }  
+	    #game_setup {
+	      margin: 5px;
+	    }
+	    #start_user_game {
+	      width: 100%;
+	    }
+	    #status_container {
+                position: fixed;
+                width: 30%;
+                height: 100%;
+                top: 0px;
+                right: 0px;
+	        color: #0A0;
+	        overflow: auto;
+	    }  
+
+	</style>  
+    </head>  
+    <body>  
+	<div id="raphael_container"></div>  
+	<div id="status_container">
+	  <div id = 'game_setup'>
+	    X:<select id = 'select_player_1'></select>
+	    O:<select id = 'select_player_2'></select>
+	    <button id = 'start_user_game'>Počni igru</button>
+	  </div>
+	  <ul id="status">
+	  </ul>
+	</div>  
+    </body>  
+</html>  
+              

@@ -1,0 +1,29 @@
+<table>
+  <thead>
+    <tr>
+      <th>User ID</th>
+      <th>Skills</th>
+      <th>Price</th>
+      <th>Date</th>
+      <th>Week</th>
+      <th>Month</th>
+      <th>Start</th>
+      <th>End</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% Statistic.all.each do |s| %>
+    <tr>
+      <td><%= s.user_id %></td>
+      <td><%= s.skills %></td>
+      <td><%= s.price %></td>
+      <td><%= s.workday_iso %></td>
+      <td><%= s.week_start_iso %></td>
+      <td><%= s.month_start_iso %></td>
+      <td><%= s.start_hour %></td>
+      <td><%= s.end_hour %></td>
+    </tr>
+    <% end %>
+  </tbody>
+
+</table>

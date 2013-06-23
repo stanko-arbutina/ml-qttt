@@ -1,0 +1,6 @@
+development:
+  adapter: postgresql
+  database: QTTT
+  username: stanko
+  password: 389389
+  host: localhost
