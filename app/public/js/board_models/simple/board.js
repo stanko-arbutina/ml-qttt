@@ -15,6 +15,10 @@ QTTT.BoardModels.Simple.Board = {
  	    nm_rep: function(){
 		return this._graph.nm_rep();
 	    },
+	    str_rep: function(){
+		var t = this.nm_rep();
+		return (t[0].join('')+'D'+t[1].join('|'));
+	    },
 	    clone: function(){
 		var new_obj = QTTT.BoardModels.Simple.Board.new();
 		if (this._resolutions)

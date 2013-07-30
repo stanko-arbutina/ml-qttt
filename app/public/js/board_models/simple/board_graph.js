@@ -3,7 +3,7 @@ QTTT.BoardModels.Simple.BoardGraph = {
     new: function(){
 	var obj = {
 	    nm_rep: function(){
-		return this._nm._array;
+		return [this._nm._array, this._nm.get_win_strength()];
 	    },
 	    clone: function(){
 		var new_obj = QTTT.BoardModels.Simple.BoardGraph.new();

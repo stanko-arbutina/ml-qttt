@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<process version="5.2.008">
+  <context>
+    <input/>
+    <output/>
+    <macros/>
+  </context>
+  <operator activated="true" class="process" compatibility="5.2.008" expanded="true" name="Process">
+    <parameter key="logverbosity" value="init"/>
+    <parameter key="random_seed" value="2001"/>
+    <parameter key="send_mail" value="never"/>
+    <parameter key="notification_email" value=""/>
+    <parameter key="process_duration_for_mail" value="30"/>
+    <parameter key="encoding" value="SYSTEM"/>
+    <process expanded="true" height="415" width="1010">
+      <operator activated="true" class="read_xml" compatibility="5.2.008" expanded="true" height="60" name="Read XML" width="90" x="45" y="300">
+        <parameter key="file" value="/home/stanko/Desktop/strojno/app/rapidminer/queries/polynomial.xml"/>
+        <parameter key="xpath_for_examples" value="//root/position"/>
+        <enumeration key="xpaths_for_attributes">
+          <parameter key="xpath_for_attribute" value="pos0[1]/text()"/>
+          <parameter key="xpath_for_attribute" value="pos1[1]/text()"/>
+          <parameter key="xpath_for_attribute" value="pos2[1]/text()"/>
+          <parameter key="xpath_for_attribute" value="pos3[1]/text()"/>
+          <parameter key="xpath_for_attribute" value="pos4[1]/text()"/>
+          <parameter key="xpath_for_attribute" value="pos5[1]/text()"/>
+          <parameter key="xpath_for_attribute" value="pos6[1]/text()"/>
+          <parameter key="xpath_for_attribute" value="pos7[1]/text()"/>
+          <parameter key="xpath_for_attribute" value="pos8[1]/text()"/>
+          <parameter key="xpath_for_attribute" value="pos9[1]/text()"/>
+          <parameter key="xpath_for_attribute" value="pos10[1]/text()"/>
+          <parameter key="xpath_for_attribute" value="pos11[1]/text()"/>
+          <parameter key="xpath_for_attribute" value="pos12[1]/text()"/>
+          <parameter key="xpath_for_attribute" value="pos13[1]/text()"/>
+          <parameter key="xpath_for_attribute" value="pos14[1]/text()"/>
+          <parameter key="xpath_for_attribute" value="pos15[1]/text()"/>
+          <parameter key="xpath_for_attribute" value="pos16[1]/text()"/>
+          <parameter key="xpath_for_attribute" value="pos17[1]/text()"/>
+          <parameter key="xpath_for_attribute" value="pos18[1]/text()"/>
+          <parameter key="xpath_for_attribute" value="pos19[1]/text()"/>
+          <parameter key="xpath_for_attribute" value="pos20[1]/text()"/>
+          <parameter key="xpath_for_attribute" value="pos21[1]/text()"/>
+          <parameter key="xpath_for_attribute" value="pos22[1]/text()"/>
+          <parameter key="xpath_for_attribute" value="pos23[1]/text()"/>
+          <parameter key="xpath_for_attribute" value="pos24[1]/text()"/>
+          <parameter key="xpath_for_attribute" value="pos25[1]/text()"/>
+          <parameter key="xpath_for_attribute" value="pos26[1]/text()"/>
+          <parameter key="xpath_for_attribute" value="pos27[1]/text()"/>
+          <parameter key="xpath_for_attribute" value="pos28[1]/text()"/>
+          <parameter key="xpath_for_attribute" value="pos29[1]/text()"/>
+          <parameter key="xpath_for_attribute" value="pos30[1]/text()"/>
+          <parameter key="xpath_for_attribute" value="pos31[1]/text()"/>
+          <parameter key="xpath_for_attribute" value="pos32[1]/text()"/>
+          <parameter key="xpath_for_attribute" value="pos33[1]/text()"/>
+          <parameter key="xpath_for_attribute" value="pos34[1]/text()"/>
+          <parameter key="xpath_for_attribute" value="pos35[1]/text()"/>
+          <parameter key="xpath_for_attribute" value="pos36[1]/text()"/>
+          <parameter key="xpath_for_attribute" value="pos37[1]/text()"/>
+          <parameter key="xpath_for_attribute" value="pos38[1]/text()"/>
+          <parameter key="xpath_for_attribute" value="pos39[1]/text()"/>
+          <parameter key="xpath_for_attribute" value="pos40[1]/text()"/>
+          <parameter key="xpath_for_attribute" value="pos41[1]/text()"/>
+          <parameter key="xpath_for_attribute" value="pos42[1]/text()"/>
+          <parameter key="xpath_for_attribute" value="pos43[1]/text()"/>
+          <parameter key="xpath_for_attribute" value="pos44[1]/text()"/>
+        </enumeration>
+        <parameter key="use_namespaces" value="true"/>
+        <list key="namespaces"/>
+        <parameter key="use_default_namespace" value="false"/>
+        <parameter key="parse_numbers" value="true"/>
+        <parameter key="decimal_character" value="."/>
+        <parameter key="grouped_digits" value="false"/>
+        <parameter key="grouping_character" value=","/>
+        <parameter key="date_format" value=""/>
+        <list key="annotations"/>
+        <parameter key="time_zone" value="SYSTEM"/>
+        <parameter key="locale" value="English (United States)"/>
+        <list key="data_set_meta_data_information">
+          <parameter key="0" value="pos0[1]/text().true.integer.attribute"/>
+          <parameter key="1" value="pos1[1]/text().true.integer.attribute"/>
+          <parameter key="2" value="pos2[1]/text().true.integer.attribute"/>
+          <parameter key="3" value="pos3[1]/text().true.integer.attribute"/>
+          <parameter key="4" value="pos4[1]/text().true.integer.attribute"/>
+          <parameter key="5" value="pos5[1]/text().true.integer.attribute"/>
+          <parameter key="6" value="pos6[1]/text().true.integer.attribute"/>
+          <parameter key="7" value="pos7[1]/text().true.integer.attribute"/>
+          <parameter key="8" value="pos8[1]/text().true.integer.attribute"/>
+          <parameter key="9" value="pos9[1]/text().true.integer.attribute"/>
+          <parameter key="10" value="pos10[1]/text().true.integer.attribute"/>
+          <parameter key="11" value="pos11[1]/text().true.integer.attribute"/>
+          <parameter key="12" value="pos12[1]/text().true.integer.attribute"/>
+          <parameter key="13" value="pos13[1]/text().true.integer.attribute"/>
+          <parameter key="14" value="pos14[1]/text().true.integer.attribute"/>
+          <parameter key="15" value="pos15[1]/text().true.integer.attribute"/>
+          <parameter key="16" value="pos16[1]/text().true.integer.attribute"/>
+          <parameter key="17" value="pos17[1]/text().true.integer.attribute"/>
+          <parameter key="18" value="pos18[1]/text().true.integer.attribute"/>
+          <parameter key="19" value="pos19[1]/text().true.integer.attribute"/>
+          <parameter key="20" value="pos20[1]/text().true.integer.attribute"/>
+          <parameter key="21" value="pos21[1]/text().true.integer.attribute"/>
+          <parameter key="22" value="pos22[1]/text().true.integer.attribute"/>
+          <parameter key="23" value="pos23[1]/text().true.integer.attribute"/>
+          <parameter key="24" value="pos24[1]/text().true.integer.attribute"/>
+          <parameter key="25" value="pos25[1]/text().true.integer.attribute"/>
+          <parameter key="26" value="pos26[1]/text().true.integer.attribute"/>
+          <parameter key="27" value="pos27[1]/text().true.integer.attribute"/>
+          <parameter key="28" value="pos28[1]/text().true.integer.attribute"/>
+          <parameter key="29" value="pos29[1]/text().true.integer.attribute"/>
+          <parameter key="30" value="pos30[1]/text().true.integer.attribute"/>
+          <parameter key="31" value="pos31[1]/text().true.integer.attribute"/>
+          <parameter key="32" value="pos32[1]/text().true.integer.attribute"/>
+          <parameter key="33" value="pos33[1]/text().true.integer.attribute"/>
+          <parameter key="34" value="pos34[1]/text().true.integer.attribute"/>
+          <parameter key="35" value="pos35[1]/text().true.integer.attribute"/>
+          <parameter key="36" value="pos36[1]/text().true.integer.attribute"/>
+          <parameter key="37" value="pos37[1]/text().true.integer.attribute"/>
+          <parameter key="38" value="pos38[1]/text().true.integer.attribute"/>
+          <parameter key="39" value="pos39[1]/text().true.integer.attribute"/>
+          <parameter key="40" value="pos40[1]/text().true.integer.attribute"/>
+          <parameter key="41" value="pos41[1]/text().true.integer.attribute"/>
+          <parameter key="42" value="pos42[1]/text().true.integer.attribute"/>
+          <parameter key="43" value="pos43[1]/text().true.integer.attribute"/>
+          <parameter key="44" value="pos44[1]/text().true.integer.attribute"/>
+        </list>
+        <parameter key="read_not_matching_values_as_missings" value="true"/>
+        <parameter key="datamanagement" value="int_array"/>
+      </operator>
+      <operator activated="true" class="read_model" compatibility="5.2.008" expanded="true" height="60" name="Read Model" width="90" x="45" y="30">
+        <parameter key="model_file" value="/home/stanko/Desktop/strojno/app/rapidminer/models/polynomial.xml"/>
+      </operator>
+      <operator activated="true" class="rename_by_replacing" compatibility="5.2.008" expanded="true" height="76" name="Rename by Replacing" width="90" x="246" y="300">
+        <parameter key="attribute_filter_type" value="all"/>
+        <parameter key="attribute" value=""/>
+        <parameter key="attributes" value=""/>
+        <parameter key="use_except_expression" value="false"/>
+        <parameter key="value_type" value="attribute_value"/>
+        <parameter key="use_value_type_exception" value="false"/>
+        <parameter key="except_value_type" value="time"/>
+        <parameter key="block_type" value="attribute_block"/>
+        <parameter key="use_block_type_exception" value="false"/>
+        <parameter key="except_block_type" value="value_matrix_row_start"/>
+        <parameter key="invert_selection" value="false"/>
+        <parameter key="include_special_attributes" value="false"/>
+        <parameter key="replace_what" value="\[1\]/text\(\)"/>
+      </operator>
+      <operator activated="true" class="apply_model" compatibility="5.2.008" expanded="true" height="76" name="Apply Model" width="90" x="581" y="75">
+        <list key="application_parameters"/>
+        <parameter key="create_view" value="false"/>
+      </operator>
+      <operator activated="true" class="write_csv" compatibility="5.2.008" expanded="true" height="76" name="Write CSV" width="90" x="759" y="252">
+        <parameter key="csv_file" value="/home/stanko/Desktop/strojno/app/rapidminer/queries/polynomial.csv"/>
+        <parameter key="column_separator" value=";"/>
+        <parameter key="write_attribute_names" value="false"/>
+        <parameter key="quote_nominal_values" value="false"/>
+        <parameter key="format_date_attributes" value="false"/>
+        <parameter key="append_to_file" value="false"/>
+        <parameter key="encoding" value="SYSTEM"/>
+      </operator>
+      <connect from_op="Read XML" from_port="output" to_op="Rename by Replacing" to_port="example set input"/>
+      <connect from_op="Read Model" from_port="output" to_op="Apply Model" to_port="model"/>
+      <connect from_op="Rename by Replacing" from_port="example set output" to_op="Apply Model" to_port="unlabelled data"/>
+      <connect from_op="Apply Model" from_port="labelled data" to_op="Write CSV" to_port="input"/>
+      <connect from_op="Write CSV" from_port="through" to_port="result 1"/>
+      <portSpacing port="source_input 1" spacing="0"/>
+      <portSpacing port="sink_result 1" spacing="0"/>
+      <portSpacing port="sink_result 2" spacing="0"/>
+    </process>
+  </operator>
+</process>

@@ -1,12 +1,14 @@
 QTTT.Players.List = {
-    2: {type: 'Computer', name: 'Bot - Dummy'},
+    4: {type: 'Computer', name: 'Bot - Polynomial', strategy: 'polynomial'},
+    3: {type: 'Computer', name: 'Bot - Naive', strategy: 'naive'},
+    2: {type: 'Computer', name: 'Bot - Dummy', strategy: 'random'},
     1: {type: 'Human', name: 'Čovjek - Gost'}
 };
 QTTT.Players.getData = function(id){
     var data = QTTT.Players.List[id];
     if (data.type=='Human')
 	return QTTT.Players.Human.new(data.name, data.id);
-    return QTTT.Players.Computer.new(data.name, data.id);
+    return QTTT.Players.Computer.new(data.name, data.id, data.strategy);
 };
 
 QTTT.GameRunner = {
@@ -24,12 +26,13 @@ QTTT.GameRunner = {
 	this._on_game_finish(function(score){
 	    var data = this.referee.positions.join('A')+'C'+score;
 	    eve('server.send');
+	    var that = this;
 	    $.post('/new', data, function(){
 		eve('server.sent');
+		that.num_games--;
+		if (that.num_games>0) that.play();
 	    });
 
-	    this.num_games--;
-	    if (this.num_games>0) this.play();
 	});
     },
     setGame: function(p1,p2, num){
@@ -68,7 +71,8 @@ $(function(){
     $('#start_user_game').click(function(){
 	var player1 = QTTT.Players.getData(Number($('#select_player_1').val()));
 	var player2 = QTTT.Players.getData(Number($('#select_player_2').val()));
-	QTTT.GameRunner.setGame(player1, player2, 10000);
+	var num_games = Number($('#select_num_games').val());
+	QTTT.GameRunner.setGame(player1, player2, num_games);
 	QTTT.GameRunner.play();
     });
 });

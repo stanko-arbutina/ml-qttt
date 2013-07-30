@@ -11,6 +11,10 @@ QTTT.GameBoard = {
 		this.reset();
 	    },
 	    nm_rep: function(){return this.board.nm_rep();},
+	    str_rep: function(){
+		var t = this.nm_rep();
+		return (t[0].join('')+'D'+t[1].join('|'));
+	    },
 	    playFragment: function(type, fragment){
 		if (type == 'add') {
 		    if (this.board.legalBig(fragment)){
@@ -37,15 +41,17 @@ QTTT.GameBoard = {
 		if (type == 'addSmall') eve('board.addSmall',{},fragment);
 		if (type == 'addBig') eve('board.addBig', {}, fragment);
 		if (type == 'resolve') eve('board.resolve', {}, fragment);
-		if (state.cycle){
-		    this._cycle = true;
-		    eve('board.cycle', {}, state.resolutions);
-		    eve('board.nextPlayer');
-		} else {
-		    if (!(type == 'resolve') && state.waitFirstSmall)
-			eve('board.nextPlayer');
-		}
 		if (state.finished) eve('game.finished',{},state.score);
+		else {
+		    if (state.cycle){
+			this._cycle = true;
+			eve('board.cycle', {}, state.resolutions);
+			eve('board.nextPlayer');
+		    } else {
+			if (!(type == 'resolve') && state.waitFirstSmall)
+			    eve('board.nextPlayer');
+		    }
+		}
 	    }
 	};
 	obj.init();

@@ -1,0 +1,14 @@
+$LOAD_PATH.unshift(File.dirname(__FILE__))
+require 'rubygems'
+require 'sinatra'
+require 'sinatra/activerecord'
+require 'ar/position'
+require 'json'
+require 'nokogiri'
+require 'csv'
+RAPIDMINER_DIR = "~/rapidminer"
+CURRENT_DIR = Dir.pwd
+
+Dir.entries('./rapidminer/learners').each do |entry|
+  puts entry
+end

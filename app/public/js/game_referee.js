@@ -26,7 +26,7 @@ QTTT.GameReferee = {
 		return this.currentPlayer().is_human;
 	    },
 	    playMove: function(){
-		this.positions.push(this.board.nm_rep().join('B'));
+		this.positions.push(this.board.str_rep());
 		if (this.current_move) this.move_list.push(this.current_move);
 		this.current_move = QTTT.Util.Move.new();//TODO za board, move type
 		this.currentPlayer().dont_play();

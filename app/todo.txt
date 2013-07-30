@@ -1,6 +1,14 @@
- - kodirati graf
- - na kraju igre, struktura podataka 
+ - slati dodatne atribute (pobjedničke linije npr.)
+ - istrenirati neuronsku mrežu samo na njima
 
-	- kodirati podatke o igri i slati ih na server
-****
-	- isključiti view/skraćena igra botova
+ - napraviti scoreboard
+
+
+ - napisati readme.MD
+ (
+   config/database.yml
+   config/rapidminer_path.txt
+   rapidminer learneri - konfigurirati pristup bazi
+   ruby app/config.rb
+ )
+ - poslati mail
